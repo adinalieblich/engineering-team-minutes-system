@@ -189,7 +189,7 @@ code {
   <tr><td>Summary</td><td>High-level dashboard view (action counts by owner / status). Optional — review before each meeting if useful.</td></tr>
   <tr><td>Meeting Minutes</td><td>Where you take notes during the meeting and where actions live. The main working sheet.</td></tr>
   <tr><td>Risk Register</td><td>Standalone register of project risks. Populated manually as risks are flagged.</td></tr>
-  <tr><td>How To Use</td><td>Quick cheat sheet inside the file. Full guide is the PDF this is based on.</td></tr>
+  <tr><td>How To Use</td><td>Quick cheat sheet inside the file. Same content as this guide.</td></tr>
   <tr><td>Changelog</td><td>Version history of the template. Locked.</td></tr>
 </table>
 </section>
@@ -205,20 +205,21 @@ code {
   <tr><th style="width:55px">Col</th><th style="width:110px">Header</th><th>What it holds</th></tr>
   <tr><td>A</td><td>Type</td><td>Dropdown: Action / Risk / blank. Blank = general note. Drives the row's CF.</td></tr>
   <tr><td>B</td><td>Description</td><td>What was discussed. One clear point per row.</td></tr>
-  <tr><td>C</td><td>Owner</td><td>Dropdown: TM1 / TM2 / TM3 / TM4 / TM5 / TM6 / ALL / AL.</td></tr>
+  <tr><td>C</td><td>Owner</td><td>Dropdown: TM1 / TM2 / TM3 / TM4 / TM5 / TM6 / ALL.</td></tr>
   <tr><td>D</td><td>Due</td><td>Date the action must be done. DD/MM/YYYY.</td></tr>
   <tr><td>E</td><td>Status</td><td>Dropdown: Open / In Progress / Done / On Hold / Waiting.</td></tr>
   <tr><td>F</td><td>Priority</td><td>Dropdown: Critical / High / Medium / Low.</td></tr>
   <tr><td>G</td><td>Days OD</td><td>Auto-calculated days overdue. Blank if not overdue or not an action.</td></tr>
   <tr><td>H</td><td>Notes / Update</td><td>Free text. Use for weekly progress or context.</td></tr>
   <tr><td>I</td><td>Project (hidden)</td><td>Project name on every row. Used by AR view filter. Filled by AddRow / AddProject macros.</td></tr>
+  <tr><td>J</td><td>Date Added (hidden)</td><td>Auto-stamped on row creation by AddRow. Never overwritten.</td></tr>
 </table>
 
 <h3>Banners</h3>
 <p>Two banner levels stacked above each project's data rows:</p>
 <ul>
   <li><strong>Lifecycle banner</strong> (full-width, dark colour): TEAM, ACTIVE PROJECTS, DLP PROJECTS, FUTURE PROJECTS, STRATEGIC, GENERAL BUSINESS, CLOSED PROJECTS.</li>
-  <li><strong>Project banner</strong> (full-width, light blue): one per project under its lifecycle. E.g. "The Avenue".</li>
+  <li><strong>Project banner</strong> (full-width, light blue): one per project under its lifecycle. E.g. "Project A".</li>
 </ul>
 <p>Lifecycle = where a project sits in the sheet. To move a project from Active to DLP: select the project's banner + all its data rows, cut, paste under the DLP banner. No macro needed.</p>
 </section>
@@ -235,6 +236,7 @@ code {
   <tr><td>FUTURE PROJECTS</td><td><span class="colorbox" style="background:#185FA5"></span><code>#185FA5</code></td></tr>
   <tr><td>STRATEGIC</td><td><span class="colorbox" style="background:#534AB7"></span><code>#534AB7</code></td></tr>
   <tr><td>GENERAL BUSINESS</td><td><span class="colorbox" style="background:#5F5E5A"></span><code>#5F5E5A</code></td></tr>
+  <tr><td>CLOSED PROJECTS</td><td><span class="colorbox" style="background:#5F5E5A"></span><code>#5F5E5A</code></td></tr>
 </table>
 
 <h3>Project banners</h3>
@@ -243,26 +245,26 @@ code {
 <h3>Row CF rules</h3>
 <table>
   <tr><th>Rule</th><th>Triggered by</th><th>Result</th></tr>
-  <tr><td>Action row</td><td>Type = Action</td><td><span class="colorbox" style="background:#FFF3CD"></span>Amber row fill</td></tr>
-  <tr><td>Overdue Action</td><td>Type = Action AND Due past today AND Status not Done/On Hold/Waiting</td><td><span class="colorbox" style="background:#FFC7CE"></span>Pink row fill (overrides amber)</td></tr>
-  <tr><td>Risk row</td><td>Type = Risk</td><td><span class="colorbox" style="background:#FFE4D5"></span>Light orange row fill</td></tr>
+  <tr><td>Action row</td><td>Type = Action</td><td><span class="colorbox" style="background:#E1E9F3"></span>Pale navy fill <code>#E1E9F3</code></td></tr>
+  <tr><td>Overdue Action</td><td>Type = Action AND Due past today AND Status not Done/On Hold/Waiting</td><td><span class="colorbox" style="background:#FBE0E0"></span>Pale red fill <code>#FBE0E0</code> (overrides pale navy)</td></tr>
+  <tr><td>Risk row</td><td>Type = Risk</td><td><span class="colorbox" style="background:#FFF1DD"></span>Pale orange fill <code>#FFF1DD</code></td></tr>
 </table>
 
 <h3>Status pill (col E)</h3>
 <table>
-  <tr><td><span class="colorbox" style="background:#E1F0E1"></span>Open</td><td><code>#E1F0E1</code></td></tr>
-  <tr><td><span class="colorbox" style="background:#FFF8DC"></span>In Progress</td><td><code>#FFF8DC</code></td></tr>
-  <tr><td><span class="colorbox" style="background:#D5E5F5"></span>Done</td><td><code>#D5E5F5</code></td></tr>
-  <tr><td><span class="colorbox" style="background:#F8E0E0"></span>On Hold</td><td><code>#F8E0E0</code></td></tr>
-  <tr><td><span class="colorbox" style="background:#ECE0F5"></span>Waiting</td><td><code>#ECE0F5</code></td></tr>
+  <tr><td><span class="colorbox" style="background:#EEF4FA"></span>Open</td><td><code>#EEF4FA</code> / <code>#5C7FA1</code> text</td></tr>
+  <tr><td><span class="colorbox" style="background:#FFF2CC"></span>In Progress</td><td><code>#FFF2CC</code> / <code>#9C7700</code> text</td></tr>
+  <tr><td><span class="colorbox" style="background:#E5F1D9"></span>Done</td><td><code>#E5F1D9</code> / <code>#5F8F37</code> text</td></tr>
+  <tr><td><span class="colorbox" style="background:#FCE5EA"></span>On Hold</td><td><code>#FCE5EA</code> / <code>#A85871</code> text</td></tr>
+  <tr><td><span class="colorbox" style="background:#F1E8F7"></span>Waiting</td><td><code>#F1E8F7</code> / <code>#7E5BA4</code> text</td></tr>
 </table>
 
 <h3>Priority pill (col F)</h3>
 <table>
   <tr><td><span class="colorbox" style="background:#C00000"></span>Critical</td><td><code>#C00000</code> / white text</td></tr>
   <tr><td><span class="colorbox" style="background:#ED7D31"></span>High</td><td><code>#ED7D31</code> / white text</td></tr>
-  <tr><td><span class="colorbox" style="background:#FFC000"></span>Medium</td><td><code>#FFC000</code> / dark text</td></tr>
-  <tr><td><span class="colorbox" style="background:#BFBFBF"></span>Low</td><td><code>#BFBFBF</code> / white text</td></tr>
+  <tr><td><span class="colorbox" style="background:#FFC000"></span>Medium</td><td><code>#FFC000</code> / <code>#7D5200</code> text</td></tr>
+  <tr><td><span class="colorbox" style="background:#A9D18E"></span>Low</td><td><code>#A9D18E</code> / <code>#375623</code> text</td></tr>
 </table>
 </section>
 

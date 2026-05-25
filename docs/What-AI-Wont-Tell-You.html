@@ -130,11 +130,11 @@ ul li{margin-bottom:4px;font-size:10px;line-height:1.5}
 <div class="cover">
   <div class="cover-stripe"></div>
   <div class="cover-inner">
-    <div class="sub">AUTHOR &nbsp;·&nbsp; CITY OF NEDLANDS &nbsp;·&nbsp; APRIL 2026</div>
+    <div class="sub">FIELD GUIDE &nbsp;·&nbsp; LOCAL GOVERNMENT ENGINEERING TEAM &nbsp;·&nbsp; 2026</div>
     <h1>What AI Won't<br>Tell You</h1>
     <div style="color:#7A9CC8;font-size:15px;margin-top:8px">A Practical Field Guide to AI-Assisted Excel &amp; VBA Development</div>
     <div class="tagline">23 confirmed errors. 10 proven strategies. Built across multiple intensive sessions inside a locked-down government IT environment with SharePoint only, no admin rights, no external tools, and no plugins. This document is the distilled output — written to save the next person weeks of frustration, AND to brief Claude at the start of new sessions so the same mistakes don't repeat.</div>
-    <div class="meta"><strong>Project:</strong> Engineering Team Engineering Team Meeting Minutes System &nbsp;·&nbsp; <strong>Stack:</strong> Excel + VBA only &nbsp;·&nbsp; <strong>AI Partner:</strong> Claude (Anthropic)</div>
+    <div class="meta"><strong>Project:</strong> Engineering Team Meeting Minutes System &nbsp;·&nbsp; <strong>Stack:</strong> Excel + VBA only &nbsp;·&nbsp; <strong>AI Partner:</strong> Claude (Anthropic)</div>
   </div>
   <div class="cover-stripe"></div>
 </div>
@@ -395,7 +395,7 @@ End Sub</div>
   <!-- ERROR 004 -->
   <div class="card">
     <div class="card-hdr"><span class="num red">ERROR 004</span><h3>AddRow inserting in wrong section</h3></div>
-    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">AddRow macro inserts a row in the wrong subsection — cursor in "The Avenue" but row appears in "Loftus Street Drainage" five sections down.</div></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">AddRow macro inserts a row in the wrong subsection — cursor in "Project A" but row appears in "Project D" five sections down.</div></div>
     <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">The macro used <span class="inline-code">Interior.Color</span> to detect section header boundaries. Conditional formatting was overriding the actual cell fill colour, so the colour checks returned wrong values — CF-applied amber looked like a regular row.</div></div>
     <div class="field-row"><div class="field-label">Diagnosis prompt</div><div class="field-val"><em>"ok i am so confused....this is such a fucking simple task and we had it working before...just add a new fucking row"</em></div></div>
     <div class="field-row"><div class="field-label">Fix</div><div class="field-val">

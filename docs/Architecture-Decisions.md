@@ -13,7 +13,7 @@ Action Register was a separate sheet. A pair of macros (`SyncToAR`, `SyncStatusB
 - The sync direction was ambiguous when both sides changed — last-write-wins, but "last" was confusing.
 
 ### New architecture
-Action Register is a saved filter view of Meeting Minutes. The `ShowActionRegisterView` macro applies AutoFilter to MM where Type = "Action" and hides the project column. `RestoreFullView` undoes it. There is no AR sheet.
+Action Register is a saved filter view of Meeting Minutes. The `ShowActionRegisterView` macro applies AutoFilter to MM where Type = "Action" and unhides the Project column (so the filtered actions show which project they belong to). `RestoreFullView` clears the filter and re-hides Project. There is no AR sheet.
 
 ### Why this is better
 - No sync. No keys. No silent breaks.

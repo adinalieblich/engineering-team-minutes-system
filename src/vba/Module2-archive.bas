@@ -92,7 +92,7 @@ ActiveWindow.DisplayGridlines = False
         End With
     Next col
 
-    owners = Array("AL", "TM2", "TM3", "TM4", "TM5", "DDB", "TM6", "JJ", "ALL")
+    owners = Array("TM1", "TM2", "TM3", "TM4", "TM5", "TM6", "TM7", "TM8", "ALL")
     statuses = Array("Open", "In Progress", "Done", "On Hold", "Waiting")
     statBGs = Array(RGB(242, 242, 242), RGB(255, 243, 205), RGB(226, 239, 218), RGB(214, 228, 247), RGB(252, 228, 214))
     statFGs = Array(RGB(89, 89, 89), RGB(125, 90, 0), RGB(55, 86, 35), RGB(31, 56, 100), RGB(131, 60, 0))
@@ -522,7 +522,7 @@ Sub WriteColourGuide(ws As Worksheet, r As Long, _
     WAITBG As Long, WAITFG As Long, OPENBG As Long, OPENFG As Long)
     Call WriteSubHeader(ws, r, "Row colours — Meeting Minutes", BLUE, WHITE): r = r + 1
     Call writeRow(ws, r, "Dark navy header", "Main section header (e.g. 3.0 ROADS / CYCLEWAYS). Do not edit these rows.", NAVY, NAVY, WHITE, WHITE): r = r + 1
-    Call writeRow(ws, r, "Mid blue header", "Project sub-header (e.g. The Avenue | Budget: $1.95M | PM: AL/TM4). Do not edit these rows.", BLUE, BLUE, WHITE, WHITE): r = r + 1
+    Call writeRow(ws, r, "Mid blue header", "Project sub-header (e.g. Project A | Budget: $X.XXM | PM: TM1/TM4). Do not edit these rows.", BLUE, BLUE, WHITE, WHITE): r = r + 1
     Call writeRow(ws, r, "Amber row", "ACTION? is ticked — action required. Fill in Owner and Due Date.", AMBER, AMBER, AMBERFONT, AMBERFONT, True): r = r + 1
     Call writeRow(ws, r, "Green row", "ACTION ticked + Status = Done. Task is complete.", DONEBG, DONEBG, DONEFG, DONEFG, True): r = r + 1
     Call writeRow(ws, r, "Amber/gold row", "ACTION ticked + Status = In Progress. Someone is actively working on this.", INPROGBG, INPROGBG, INPROGFG, INPROGFG, True): r = r + 1

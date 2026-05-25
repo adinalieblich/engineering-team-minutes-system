@@ -15,20 +15,20 @@ These are exported VBA modules. They are not executable as standalone files. To 
 Macros that run in normal day-to-day operation of the workbook.
 
 ### Keyboard shortcuts
-- `Ctrl+Shift+A` — `AddRow` — adds a row to the current section
-- `Ctrl+Shift+P` — `AddProject` — adds a new project sub-section
-- `Ctrl+Shift+R` — `AddSection` — adds a new section header
-- `Ctrl+Shift+S` — `AddSubsection` — adds a new sub-section
+- `Ctrl+Shift+A` — `AddRow` — adds a data row below the current row, inherits Project (col I), stamps Date Added (col J)
+- `Ctrl+Shift+P` — `AddProject` — inserts a project banner below the current row (prompts for project name)
+
+Lifecycle banners (ACTIVE PROJECTS, DLP PROJECTS, etc.) are typed manually — there is no auto-rebuild macro by design.
 
 ### Buttons / toolbar
-- `ShowActionRegisterView` — filters Meeting Minutes to Type=Action, hides project column
-- `RestoreFullView` — undoes the above
-- `ToggleDoneRows` — hides/shows rows with Status=Done
+- `ShowActionRegisterView` — filters Meeting Minutes to Type=Action, unhides the Project column so it's visible in the filtered view
+- `RestoreFullView` — undoes the above (clears the filter, re-hides Project)
+- `ToggleDoneRows` — hides/shows rows with Status=Done on Meeting Minutes
 - `ToggleClosedRisks` — same for Risk Register
-- `PopulateRiskRegister` — copies new Risk rows from Meeting Minutes into Risk Register sheet (additive only, never overwrites)
+- `PopulateRiskRegister` — copies new Risk rows from Meeting Minutes into Risk Register sheet (additive only, never overwrites existing entries — matched on compound key Description + Owner)
 
 ### One-shot (kept in Module1 for re-runs)
-- `WriteODDaysFormula` — writes the OD Days formula to column G
+- `WriteODDaysFormula` — writes the Days OD formula to column G
 - `FixSummaryOverdueFormula` — rebuilds the Summary tab overdue counts
 - `BuildSummaryTab` — full Summary tab rebuild
 - `BuildHowToUseTab` — rebuilds the embedded How To Use sheet
