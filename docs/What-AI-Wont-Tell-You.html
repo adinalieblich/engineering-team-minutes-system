@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What AI Won't Tell You — A Practical Field Guide</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1F3864;--blue:#2E75B6;--green:#70AD47;--sage:#505B40;
+  --rust:#843C0C;--red:#C00000;--amber:#ED7D31;--yellow:#FFC000;
+  --dark:#1A1A2E;--grey:#595959;--white:#fff;--offwhite:#FAFAFA;
+  --altrow:#F2F2F2;--codebg:#F0F4F8;--calloutbg:#EEF4FB;
+  --rulebg:#FFF3CD;--warningbg:#FCE4D6;
+}
+body{font-family:Arial,sans-serif;font-size:11px;color:var(--dark);background:#E8E8E8;line-height:1.6}
+
+/* ── NAV ── */
+.nav{background:var(--navy);position:sticky;top:0;z-index:100;display:flex;flex-wrap:wrap;border-bottom:3px solid var(--green)}
+.nav a{color:rgba(255,255,255,0.75);text-decoration:none;padding:11px 14px;font-size:10px;font-weight:700;letter-spacing:0.03em;border-bottom:3px solid transparent;transition:all 0.15s;white-space:nowrap}
+.nav a:hover,.nav a.active{color:#fff;border-bottom-color:var(--green);background:rgba(255,255,255,0.08)}
+
+/* ── COVER ── */
+.cover{background:var(--navy);padding:0}
+.cover-stripe{background:var(--green);height:5px}
+.cover-inner{padding:60px 60px 50px;max-width:900px;margin:0 auto}
+.cover h1{font-size:42px;font-weight:700;color:#fff;line-height:1.1;margin-bottom:12px}
+.cover .sub{font-size:16px;color:var(--blue);margin-bottom:0;font-weight:400;color:#7A9CC8}
+.cover .tagline{font-size:13px;color:rgba(255,255,255,0.6);margin-top:24px;padding:14px 20px;border-left:4px solid var(--green);line-height:1.7;font-style:italic}
+.cover .meta{margin-top:36px;font-size:11px;color:rgba(255,255,255,0.5)}
+.cover .meta strong{color:rgba(255,255,255,0.8)}
+
+/* ── PAGE LAYOUT ── */
+.page{max-width:900px;margin:0 auto;padding:0 0 60px}
+.section{display:none}.section.active{display:block}
+
+/* ── SECTION BANNERS ── */
+.section-banner{background:var(--navy);color:#fff;padding:32px 40px;margin-bottom:0}
+.section-banner .eyebrow{font-size:9px;font-weight:700;letter-spacing:0.15em;color:var(--green);text-transform:uppercase;margin-bottom:8px}
+.section-banner h2{font-size:24px;font-weight:700;margin-bottom:8px}
+.section-banner p{font-size:11px;color:rgba(255,255,255,0.7);max-width:600px;line-height:1.6}
+
+/* ── CARDS ── */
+.card{background:#fff;border:1px solid #DDD;margin:20px 40px;border-radius:4px;overflow:hidden}
+.card-hdr{background:var(--offwhite);padding:14px 20px;border-bottom:1px solid #DDD;display:flex;align-items:center;gap:12px}
+.card-hdr .num{background:var(--navy);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:2px;white-space:nowrap}
+.card-hdr .num.red{background:var(--red)}
+.card-hdr .num.blue{background:var(--blue)}
+.card-hdr .num.green{background:var(--sage)}
+.card-hdr h3{font-size:13px;font-weight:700;color:var(--navy);flex:1}
+.card-body{padding:20px}
+.card-body + .card-body{border-top:1px solid #EEE}
+
+/* ── ERROR CARD ROWS ── */
+.field-row{display:grid;grid-template-columns:120px 1fr;gap:0;border-bottom:1px solid #F0F0F0}
+.field-row:last-child{border-bottom:none}
+.field-label{background:#F8F8F8;padding:10px 14px;font-size:9px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:0.05em;border-right:1px solid #EEE}
+.field-val{padding:10px 14px;font-size:10px;color:var(--dark);line-height:1.6}
+
+/* ── RULE / CALLOUT BOXES ── */
+.rule-box{background:var(--rulebg);border-left:4px solid var(--amber);padding:12px 16px;margin:12px 0;border-radius:0 3px 3px 0}
+.rule-box .rule-label{font-size:9px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px}
+.rule-box p{font-size:10px;color:var(--dark);font-weight:700;line-height:1.5}
+.callout{background:var(--calloutbg);border-left:4px solid var(--blue);padding:12px 16px;margin:12px 0;border-radius:0 3px 3px 0;font-size:10px;color:var(--navy);line-height:1.6;font-style:italic}
+.warning-box{background:var(--warningbg);border-left:4px solid var(--rust);padding:12px 16px;margin:12px 0;border-radius:0 3px 3px 0}
+.warning-box .warn-label{font-size:9px;font-weight:700;color:var(--rust);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px}
+.warning-box p{font-size:10px;color:var(--dark);line-height:1.5}
+.golden{background:var(--navy);color:#fff;padding:16px 20px;margin:16px 0;border-radius:3px;text-align:center;font-size:13px;font-weight:700;letter-spacing:0.03em;border-top:3px solid var(--green);border-bottom:3px solid var(--green)}
+
+/* ── CODE ── */
+.code-block{background:var(--codebg);border:1px solid #D0D8E0;border-radius:3px;padding:14px 16px;margin:10px 0;font-family:'Courier New',monospace;font-size:9px;line-height:1.7;color:#1A1A2E;white-space:pre;overflow-x:auto}
+.code-block .comment{color:#666;font-style:italic}
+.inline-code{font-family:'Courier New',monospace;font-size:9px;background:#F0F4F8;padding:1px 5px;border-radius:2px;color:#1A1A2E;border:1px solid #D0D8E0}
+
+/* ── TABLES ── */
+.data-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:10px}
+.data-table th{background:var(--navy);color:#fff;padding:8px 12px;text-align:left;font-size:9px;font-weight:700;letter-spacing:0.03em}
+.data-table td{padding:7px 12px;border-bottom:1px solid #EEE;vertical-align:top;line-height:1.5}
+.data-table tr:nth-child(even) td{background:#FAFAFA}
+.data-table tr:hover td{background:#F0F4FF}
+.data-table .good{color:#375623;font-weight:700}
+.data-table .bad{color:var(--red);font-weight:700}
+
+/* ── STRATEGY CARDS ── */
+.strategy-card{background:#fff;border:1px solid #DDD;margin:20px 40px;border-radius:4px;overflow:hidden}
+.strategy-hdr{display:flex;align-items:stretch}
+.strategy-num{background:var(--sage);color:#fff;font-size:22px;font-weight:700;padding:20px 24px;display:flex;align-items:center;justify-content:center;min-width:70px}
+.strategy-title-block{background:var(--offwhite);padding:16px 20px;border-bottom:1px solid #DDD;flex:1}
+.strategy-title-block h3{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.strategy-title-block .stag{font-size:9px;color:var(--grey);font-weight:400}
+.strategy-body{padding:20px}
+.strategy-prompt{background:#F5F0E8;border-left:3px solid var(--sage);padding:10px 14px;margin:10px 0;font-size:10px;color:var(--sage);font-style:italic;line-height:1.5}
+.strategy-prompt::before{content:"Key prompt:  ";font-weight:700;font-style:normal}
+
+/* ── PATTERN CARDS ── */
+.pattern-card{background:#fff;border:1px solid #DDD;margin:20px 40px;border-radius:4px;overflow:hidden}
+.pattern-hdr{background:var(--codebg);border-bottom:1px solid #D0D8E0;padding:12px 20px;display:flex;align-items:center;gap:10px}
+.pattern-hdr .pnum{background:var(--blue);color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:2px}
+.pattern-hdr h3{font-size:12px;font-weight:700;color:var(--navy)}
+
+/* ── COLOUR SWATCHES ── */
+.swatch-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+.swatch{border:1px solid rgba(0,0,0,0.1);border-radius:3px;overflow:hidden}
+.swatch-colour{height:40px}
+.swatch-info{padding:8px;font-size:9px;line-height:1.5}
+.swatch-name{font-weight:700;color:var(--dark)}
+.swatch-vals{color:var(--grey);font-family:'Courier New',monospace}
+
+/* ── TWO COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0}
+
+/* ── MISC ── */
+p{margin-bottom:8px;font-size:11px;line-height:1.6}
+h4{font-size:11px;font-weight:700;color:var(--navy);margin:14px 0 6px}
+ul{padding-left:20px;margin:8px 0}
+ul li{margin-bottom:4px;font-size:10px;line-height:1.5}
+.spacer{height:20px}
+.intro-text{padding:24px 40px;background:#fff;border-bottom:3px solid #EEE;font-size:11px;line-height:1.7;color:var(--dark)}
+.intro-text p{margin-bottom:10px}
+.tag{display:inline-block;padding:1px 7px;border-radius:2px;font-size:9px;font-weight:700}
+.tag-red{background:#FFE7E7;color:var(--red)}
+.tag-amber{background:#FFF3CD;color:var(--amber)}
+.tag-green{background:#E2EFDA;color:#375623}
+.tag-blue{background:#DDEBF7;color:var(--navy)}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-stripe"></div>
+  <div class="cover-inner">
+    <div class="sub">AUTHOR &nbsp;·&nbsp; CITY OF NEDLANDS &nbsp;·&nbsp; APRIL 2026</div>
+    <h1>What AI Won't<br>Tell You</h1>
+    <div style="color:#7A9CC8;font-size:15px;margin-top:8px">A Practical Field Guide to AI-Assisted Excel &amp; VBA Development</div>
+    <div class="tagline">23 confirmed errors. 10 proven strategies. Built across multiple intensive sessions inside a locked-down government IT environment with SharePoint only, no admin rights, no external tools, and no plugins. This document is the distilled output — written to save the next person weeks of frustration, AND to brief Claude at the start of new sessions so the same mistakes don't repeat.</div>
+    <div class="meta"><strong>Project:</strong> Engineering Team Engineering Team Meeting Minutes System &nbsp;·&nbsp; <strong>Stack:</strong> Excel + VBA only &nbsp;·&nbsp; <strong>AI Partner:</strong> Claude (Anthropic)</div>
+  </div>
+  <div class="cover-stripe"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- READ FIRST — RECURRING TRAPS FOR CLAUDE -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div class="card" style="margin:20px;border:2px solid #C00000;background:#FFF5F5">
+  <div class="card-hdr" style="background:#C00000;color:white;padding:10px 14px;margin:-1px -1px 12px;border-radius:6px 6px 0 0">
+    <span class="num" style="background:white;color:#C00000;padding:2px 8px;border-radius:3px;font-weight:600">READ FIRST</span>
+    <h3 style="color:white;margin-left:10px">Claude — these are the recurring mistakes you make on this project. Check yourself against this list BEFORE writing code.</h3>
+  </div>
+  <div class="card-body">
+    <p style="font-size:11px;color:#666;margin:0 0 12px"><em>This block exists because this document is loaded as project context to brief Claude. It must be the first thing Claude reads. Each trap below is detailed in the Error Index — this is the quick-reference scan.</em></p>
+
+    <h4 style="color:#C00000;margin:14px 0 6px;font-size:13px">VBA quote escaping — verify destination format BEFORE writing the string</h4>
+    <ul style="margin:0 0 12px;padding-left:18px;font-size:11px;line-height:1.6">
+      <li><strong>Data validation list:</strong> <span class="inline-code">Formula1:="Active,DLP,Closed"</span> — plain quotes only, NO triple quotes. Triple quotes leak literal <span class="inline-code">"</span> into first/last values. <em>(Error 023)</em></li>
+      <li><strong>CF expression formula:</strong> <span class="inline-code">Formula1:="=$D2=""Action"""</span> — triple quotes here ARE correct because the inner quotes need to survive into the formula. <em>(Error 016)</em></li>
+      <li><strong>Rule:</strong> If destination is a formula starting with <span class="inline-code">=</span> with embedded strings → triple. If destination is a plain CSV list → plain. Check before writing.</li>
+    </ul>
+
+    <h4 style="color:#C00000;margin:14px 0 6px;font-size:13px">CF / fill rendering — fgColor not bgColor, and do not write Excel files via openpyxl</h4>
+    <ul style="margin:0 0 12px;padding-left:18px;font-size:11px;line-height:1.6">
+      <li>openpyxl writes CF fills as <span class="inline-code">bgColor</span> which Excel renders as invisible. Excel needs <span class="inline-code">fgColor</span>. <em>(Error 001 — the cardinal rule)</em></li>
+      <li>NEVER ship a built .xlsx/.xlsm to the user. Always write VBA macros for the user to run inside Excel. The user builds the file, Claude builds the code.</li>
+      <li>If user reports "fill not showing" or "CF not working" — first check whether file was openpyxl-built. If yes, the file is corrupted, the only fix is rebuild via VBA in a fresh blank workbook.</li>
+    </ul>
+
+    <h4 style="color:#C00000;margin:14px 0 6px;font-size:13px">CF AppliesTo — always contiguous, always expression rules</h4>
+    <ul style="margin:0 0 12px;padding-left:18px;font-size:11px;line-height:1.6">
+      <li>Use <span class="inline-code">xlExpression</span> with <span class="inline-code">$Col</span> absolute reference. Never use <span class="inline-code">cellIs equal to "value"</span> on growing data. <em>(Error 018)</em></li>
+      <li>sqref must be a single contiguous range like <span class="inline-code">A2:H1000</span>, never a fragmented list. Fragmentation is invisible in the UI but wrecks new-row coverage.</li>
+      <li>If user reports "CF doesn't work on new rows" — first action: extract the file XML and check sqref for fragmentation. Don't write a "fix" macro before confirming the actual state.</li>
+    </ul>
+
+    <h4 style="color:#C00000;margin:14px 0 6px;font-size:13px">Behaviour — diagnose before patching, read the file before bucketing</h4>
+    <ul style="margin:0 0 12px;padding-left:18px;font-size:11px;line-height:1.6">
+      <li>Do NOT propose a categorised plan ("Bucket A migration kills these / Bucket B fix these...") before reading the actual current file. Plans built on assumptions get demolished. <em>(Problem 7)</em></li>
+      <li>Do NOT claim "Migration / Notion / Tables / Power Automate will fix this" without naming the specific mechanism. Vague tooling-will-help claims are wrong by default. <em>(Problem 8)</em></li>
+      <li>If the user says "this isn't working" three times on the same area — STOP patching. Ask the zoom-out question. Cleanup-macro v8 is not the answer; a different architecture is. <em>(Strategy 9)</em></li>
+      <li>If the user pushes back on confidence — they are right. Open the file, do the file-level check, do not refer to project docs as evidence of current file state. <em>(Strategy 10)</em></li>
+    </ul>
+
+    <h4 style="color:#C00000;margin:14px 0 6px;font-size:13px">Form controls — never use them on growing data</h4>
+    <ul style="margin:0 0 12px;padding-left:18px;font-size:11px;line-height:1.6">
+      <li>Form-control checkboxes drift, accumulate, and slow the file. Use a typed value (Y/N, TRUE/FALSE, dropdown). <em>(Error 019)</em></li>
+      <li>If checkbox-driven CF is requested — push back. Suggest a Type/Status dropdown instead. <em>(Decision 6)</em></li>
+    </ul>
+
+    <h4 style="color:#C00000;margin:14px 0 6px;font-size:13px">Screenshots — describe before concluding, prefer data over images</h4>
+    <ul style="margin:0 0 12px;padding-left:18px;font-size:11px;line-height:1.6">
+      <li>When the user uploads a screenshot, list what you see row-by-row or element-by-element BEFORE drawing a conclusion. Do not pattern-match the whole image then declare a finding.</li>
+      <li>Screenshots are lossy. Colours, especially adjacent pinks/ambers, are easy to misread. If accuracy matters, ask for a macro that prints the actual values (Interior.Color, cell value, formula result) instead of relying on the image.</li>
+      <li>If the user says "check again, you are wrong" — they are right. Re-examine the screenshot row-by-row, do not defend the original conclusion.</li>
+    </ul>
+
+    <h4 style="color:#C00000;margin:14px 0 6px;font-size:13px">Communication — keep messages short</h4>
+    <ul style="margin:0 0 12px;padding-left:18px;font-size:11px;line-height:1.6">
+      <li>Long bucketed proposals are not helpful. The user has stated this explicitly multiple times.</li>
+      <li>Match message length to the question. A diagnostic question gets a one-paragraph answer, not a full architecture re-evaluation.</li>
+      <li>When given a choice between a 3-line answer and a 30-line one and they're equally correct, pick the 3-line.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <a href="#" class="active" onclick="show('cardinal')">The Cardinal Rule</a>
+  <a href="#" onclick="show('errors')">Error Index</a>
+  <a href="#" onclick="show('strategies')">Strategies</a>
+  <a href="#" onclick="show('patterns')">VBA Patterns</a>
+  <a href="#" onclick="show('aiproblems')">What AI Gets Wrong</a>
+  <a href="#" onclick="show('design')">Design Decisions</a>
+  <a href="#" onclick="show('distribution')">Distribution Strategy</a>
+  <a href="#" onclick="show('appendix')">Appendix</a>
+</div>
+
+<div class="page">
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- CARDINAL RULE -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="cardinal" class="section active">
+  <div class="section-banner">
+    <div class="eyebrow">The Most Important Lesson</div>
+    <h2>Never Let AI Build You an Excel File Directly</h2>
+    <p>Everything else in this document flows from this single rule. Starting the project by doing the wrong thing here cost days of debugging time that could never be recovered.</p>
+  </div>
+  <div class="intro-text">
+    <p>The project started by asking Claude to build the Excel file using Python/openpyxl and deliver it as a download. This seemed efficient — one step, complete file. It created a corrupted foundation that caused cascading problems for every session that followed. Hours were lost trying to fix CF fills that looked correct in VBA but were invisible in Excel. The root cause was untraceable until we audited the raw XML.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num red">THE CORE PROBLEM</span><h3>bgColor vs fgColor — the corruption that persists forever</h3></div>
+    <div class="card-body">
+      <p>openpyxl writes Conditional Formatting fills using <span class="inline-code">bgColor</span> in the dxf XML. Excel requires <span class="inline-code">fgColor</span> for CF fills to render visibly.</p>
+      <div class="two-col">
+        <div>
+          <div class="warning-box"><div class="warn-label">❌ What openpyxl writes</div><p>bgColor — invisible as a solid fill</p></div>
+          <div class="code-block">&lt;patternFill patternType="solid"&gt;
+  &lt;bgColor rgb="FFE4F0E0"/&gt;
+&lt;/patternFill&gt;</div>
+        </div>
+        <div>
+          <div class="rule-box"><div class="rule-label">✅ What Excel needs to show it</div><p>fgColor — visible as a solid fill</p></div>
+          <div class="code-block">&lt;patternFill patternType="solid"&gt;
+  &lt;fgColor rgb="FFE4F0E0"/&gt;
+&lt;/patternFill&gt;</div>
+        </div>
+      </div>
+      <p style="margin-top:10px">Once bgColor is written into the dxf structure, <strong>every subsequent VBA macro that tries to fix it writes the colour value correctly but Excel still reads the structure as bgColor</strong> — because VBA respects the existing XML structure. The corruption persists indefinitely no matter how many fix macros you run.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num red">THE XML DANGER ZONES</span><h3>Never touch these via Python/openpyxl</h3></div>
+    <div class="card-body">
+      <table class="data-table">
+        <thead><tr><th>XML file / section</th><th>What goes wrong</th></tr></thead>
+        <tbody>
+          <tr><td><strong>styles.xml — dxfs section</strong><br><em>(CF differential formats)</em></td><td>openpyxl writes rgb="00XXXXXX" (transparent) instead of "FFXXXXXX". Omits patternType="solid" making fills invisible. Post-process regex fixes are unreliable and break other things.</td></tr>
+          <tr><td><strong>styles.xml — cellXfs section</strong><br><em>(cell style table)</em></td><td>Every cell references a style index. Adding/removing styles shifts ALL indices — breaks every cell reference in every sheet. Silent failure, no error thrown.</td></tr>
+          <tr><td><strong>sharedStrings.xml</strong></td><td>All cell text is stored here as indexed strings. Edit one string and every cell referencing that index gets the new value. Delete or reorder strings and values corrupt silently.</td></tr>
+          <tr><td><strong>sheet.xml — CF blocks</strong></td><td>CF rules reference dxf indices from styles.xml. If dxfs shift, wrong CF rules apply to wrong ranges. Row insertions/deletions leave orphaned CF ranges (e.g. A1048576) that persist forever.</td></tr>
+          <tr><td><strong>drawing.xml</strong></td><td>Shape positions in EMU units with complex anchor references. Editing breaks shape positions and sometimes corrupts the entire drawing layer.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num green">THE CORRECT WORKFLOW</span><h3>Always — without exception</h3></div>
+    <div class="card-body">
+      <div class="golden">AI writes CODE &nbsp;·&nbsp; You run CODE &nbsp;·&nbsp; Excel writes FILES &nbsp;·&nbsp; Never let AI write files directly</div>
+      <table class="data-table" style="margin-top:16px">
+        <thead><tr><th>Wrong approach</th><th>Right approach</th></tr></thead>
+        <tbody>
+          <tr><td class="bad">Ask AI to build and deliver an Excel/xlsm file</td><td class="good">Ask AI to write VBA macros that YOU run inside Excel</td></tr>
+          <tr><td class="bad">Can you fix the CF in this file?</td><td class="good">Write me a VBA macro that deletes all CF and rebuilds from scratch</td></tr>
+          <tr><td class="bad">Here's my file, update the colours</td><td class="good">Write me a VBA macro I can run to update the colours</td></tr>
+          <tr><td class="bad">Build me an Excel template and send it to me</td><td class="good">Write me a VBA macro that builds the template when I run it</td></tr>
+          <tr><td class="bad">Fix broken CF via XML editing</td><td class="good">Delete file, start fresh with a blank xlsm, run VBA macros from scratch</td></tr>
+          <tr><td class="good">Upload file for Claude to read/diagnose</td><td class="good">Safe — reading XML only, no writing</td></tr>
+        </tbody>
+      </table>
+      <h4>Step by step — the correct workflow</h4>
+      <ol style="padding-left:20px;font-size:10px;line-height:1.8">
+        <li>Create a blank new .xlsm file yourself in Excel</li>
+        <li>Open VBA editor (Alt+F11)</li>
+        <li>Paste in macros Claude writes</li>
+        <li>Run the macros — Excel's own engine builds the file</li>
+        <li>Excel writes correct XML from the start — no corruption possible</li>
+        <li>From this point on: all formatting, CF, and style changes via VBA only</li>
+        <li>Never go back to Python to modify a file that has been Excel-edited</li>
+      </ol>
+      <div class="callout">The painful irony: the fix for a corrupted file IS to start fresh with a blank file and run VBA macros. Which is what we should have done from the beginning. The fastest path forward is always the path that avoids AI-generated files entirely.</div>
+      <h4>What openpyxl IS safe for</h4>
+      <ul>
+        <li>Creating brand new files from scratch — before any Excel editing</li>
+        <li>Reading cell values and structure for analysis</li>
+        <li>Writing data values (not formatting) to new files</li>
+      </ul>
+      <h4>This applies beyond Excel</h4>
+      <p>Word .docx files — use VBA/macros not python-docx &nbsp;·&nbsp; PowerPoint .pptx — use VBA/macros not python-pptx &nbsp;·&nbsp; Any binary or ZIP-based format where internal XML relationships matter</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- ERROR INDEX -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="errors" class="section">
+  <div class="section-banner">
+    <div class="eyebrow">Part 2</div>
+    <h2>Error Index</h2>
+    <p>23 confirmed errors with symptoms, root causes, and working fixes. All encountered in real development. All confirmed by actually running the code in a live corporate Excel environment.</p>
+  </div>
+  <div class="intro-text"><p>These are not hypothetical. Every error here cost real time. The diagnosis prompts included are part of the lesson — the words that forced the right conversation.</p></div>
+
+  <!-- SESSION LOG — 29/04/2026 -->
+  <div class="card" style="border-left:4px solid #534AB7">
+    <div class="card-hdr"><span class="num blue">SESSION LOG</span><h3>29/04/2026 — The day the template fought back</h3></div>
+    <div class="card-body">
+      <p>A live meeting using the old template. The user opened a chat to dump issues as they came up, intending to triage later. Within the meeting, 14 distinct issues surfaced. Roughly half traced to a single pattern: <em>new rows don't inherit the column's properties</em> — CF coverage, number format, data validation, checkbox anchoring. The other half traced to a related pattern: <em>the cleanup macro can't catch its own gaps</em>.</p>
+      <p>The arc of the conversation is the lesson, more than the bugs themselves:</p>
+      <ol>
+        <li><strong>Symptom dumping.</strong> User threw issues into chat as they appeared. Claude logged each one without trying to solve. <em>Right move</em> — the sorting comes later.</li>
+        <li><strong>First-pass plan, built on assumptions.</strong> Claude bucketed the 14 issues into "migration kills these / one root cause / new features" before reading the file. The plan looked structured; it was wrong. (See Problem 7.)</li>
+        <li><strong>Push-back forced inspection.</strong> "All wrong. Now I have to assume everything you said is wrong." Claude opened the actual file and found CF sqref fragmentation that no amount of reasoning from project docs would have surfaced. (See Strategy 10.)</li>
+        <li><strong>Slow it down.</strong> "Run multiple checks. Break it down into small steps." Forced step-by-step diagnostic instead of another quick fix. Revealed Errors 018, 019, 020 as related, not coincidental.</li>
+        <li><strong>Zoom-out question.</strong> "Last time you zoomed out you suggested we get rid of the AR — what are we not seeing now?" Produced Decision 6 in five minutes: replace three checkbox columns with one Type dropdown. Solves four error categories simultaneously. (See Strategy 9.)</li>
+      </ol>
+      <p><strong>The bugs that came out of this session:</strong> Errors 018 (CF sqref fragmentation), 019 (form-control checkbox drift), 020 (cleanup macro doesn't fix its own scope), 021 (ToggleDoneRegister TextFrame error), 022 (AR Project blank).</p>
+      <p><strong>The architectural decision:</strong> Decision 6 — Type dropdown replaces three checkbox columns. Solves Errors 011, 019 directly and reduces the surface area for 001, 016, 020 indirectly.</p>
+      <p><strong>The patterns documented:</strong> Strategy 9 (The Zoom-Out Question), Strategy 10 (The Push-Back Habit), Problem 7 (Bucketing before reading), Problem 8 (Confident wrong claims about other systems).</p>
+      <div class="rule-box"><div class="rule-label">Meta-lesson</div><p>The most productive moments in this session were the user pushing back against Claude's confidence. Without those interruptions, the session would have produced a polished plan built on wrong assumptions, and the actual root causes would still be unknown.</p></div>
+    </div>
+  </div>
+
+  <!-- ERROR 001 -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 001</span><h3>CF fills invisible — transparent background</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">CF rules apply and text colour changes, but background fill is completely invisible. No error is thrown — it just silently doesn't work.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">VBA writes <span class="inline-code">patternType</span> as missing in XML when <span class="inline-code">.Interior.Color</span> is set without first setting <span class="inline-code">.Interior.Pattern</span>. Excel renders missing patternType as no fill — the colour value is stored but never displayed.</div></div>
+    <div class="field-row"><div class="field-label">Diagnosis prompt</div><div class="field-val"><em>"please triple check and debug this one — the fill pattern issue is a consistent one and I already flagged it before"</em></div></div>
+    <div class="field-row"><div class="field-label">Fix</div><div class="field-val">
+      <div class="code-block">With Range("A1:G100").FormatConditions.Add(Type:=xlExpression, Formula1:="=$C1=TRUE")
+    .Interior.Pattern = xlSolid    <span class="comment">' THIS LINE IS CRITICAL — must come first</span>
+    .Interior.Color = RGB(255, 243, 205)
+    .Font.Color = RGB(125, 82, 0)
+    .StopIfTrue = False
+End With</div>
+    </div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val"><strong>ALWAYS set <span class="inline-code">.Interior.Pattern = xlSolid</span> BEFORE <span class="inline-code">.Interior.Color</span> on every single FormatCondition object. No exceptions, ever.</strong></div></div>
+    <div class="field-row"><div class="field-label">Lesson</div><div class="field-val">This is a completely silent bug. No error is thrown. The fill just doesn't render. The only way to confirm the fix worked is to check the XML dxfs section for <span class="inline-code">patternType="solid"</span>.</div></div>
+  </div>
+
+  <!-- ERROR 002 -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 002</span><h3>DisplayGridlines compile error</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">Compile error: Method or data member not found — highlighted on <span class="inline-code">ws.DisplayGridlines = False</span></div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val"><span class="inline-code">DisplayGridlines</span> is a property of the Window object, not the Worksheet object. This error appears in essentially every macro that tries to hide gridlines.</div></div>
+    <div class="field-row"><div class="field-label">Diagnosis prompt</div><div class="field-val"><em>"same error as before yet you keep wasting my time"</em></div></div>
+    <div class="field-row"><div class="field-label">Fix</div><div class="field-val">
+      <div class="code-block"><span class="comment">' WRONG — causes compile error:</span>
+ws.DisplayGridlines = False
+
+<span class="comment">' CORRECT — always use this:</span>
+ws.Activate
+ActiveWindow.DisplayGridlines = False</div>
+    </div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">Never use <span class="inline-code">ws.DisplayGridlines</span>. Always activate the sheet first, then use <span class="inline-code">ActiveWindow.DisplayGridlines = False</span>. Check for this in every macro before sending.</div></div>
+  </div>
+
+  <!-- ERROR 003 -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 003</span><h3>Dim inside For loop — compile error</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">Compile error on a Dim statement inside a For loop or If block.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">VBA requires ALL variable declarations at the top of the Sub/Function. Unlike most modern languages, you cannot declare variables mid-procedure.</div></div>
+    <div class="field-row"><div class="field-label">Diagnosis prompt</div><div class="field-val"><em>"please run through VBA debugger — are you really sure you have debugged this?"</em></div></div>
+    <div class="field-row"><div class="field-label">Fix</div><div class="field-val">
+      <div class="code-block">Sub MyMacro()
+    <span class="comment">' ALL Dims at the very top — even variables only used inside loops</span>
+    Dim ws As Worksheet
+    Dim r As Long
+    Dim bg As Long
+    Dim cellBG As Long
+
+    For r = 1 To 100
+        bg = RGB(255, 255, 255)  <span class="comment">' assignment is fine here — only Dim must be above</span>
+    Next r
+End Sub</div>
+    </div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">Before sending any macro, check for Dim statements that appear after the first For, Do, If, or With. Move all Dims to the top. Also check for duplicate Dim names — VBA will error on a second declaration of the same variable name.</div></div>
+  </div>
+
+  <!-- ERROR 004 -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 004</span><h3>AddRow inserting in wrong section</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">AddRow macro inserts a row in the wrong subsection — cursor in "The Avenue" but row appears in "Loftus Street Drainage" five sections down.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">The macro used <span class="inline-code">Interior.Color</span> to detect section header boundaries. Conditional formatting was overriding the actual cell fill colour, so the colour checks returned wrong values — CF-applied amber looked like a regular row.</div></div>
+    <div class="field-row"><div class="field-label">Diagnosis prompt</div><div class="field-val"><em>"ok i am so confused....this is such a fucking simple task and we had it working before...just add a new fucking row"</em></div></div>
+    <div class="field-row"><div class="field-label">Fix</div><div class="field-val">
+      Replace colour detection with MergeCells detection. Section and subsection header rows are merged across A:K. Data rows are never merged.
+      <div class="code-block">If ws.Cells(r, 1).MergeCells Then
+    <span class="comment">' This is a header row — skip it</span>
+Else
+    <span class="comment">' This is a data row — process it</span>
+End If</div>
+    </div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">Never rely on <span class="inline-code">Interior.Color</span> to detect row type when CF is active. CF overrides the stored colour value. Use structural properties instead: MergeCells, RowHeight, or font properties.</div></div>
+  </div>
+
+  <!-- ERROR 005 -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 005</span><h3>Keyboard shortcut conflict with Excel built-ins</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">Macro inserts row in the wrong location — cursor on row 32 but insertion happens at row 75.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">Ctrl+R is Excel's built-in "Fill Right" command. When assigned as a macro shortcut, Excel processes the built-in command first, moving the cursor, before the macro captures <span class="inline-code">ActiveCell.Row</span>.</div></div>
+    <div class="field-row"><div class="field-label">Fix</div><div class="field-val">
+      Use Ctrl+Shift+[letter] instead of Ctrl+[letter] for all macro shortcuts.
+      <div class="code-block"><span class="comment">' Excel built-in shortcuts to NEVER assign to macros:</span>
+<span class="comment">' Ctrl+R (Fill Right)   Ctrl+D (Fill Down)    Ctrl+Z (Undo)</span>
+<span class="comment">' Ctrl+C/V/X            Ctrl+B/I/U             Ctrl+P (Print)</span>
+
+<span class="comment">' Safe shortcuts confirmed in this project:</span>
+<span class="comment">' Ctrl+Shift+A = AddRow</span>
+<span class="comment">' Ctrl+Shift+R = AddSection</span>
+<span class="comment">' Ctrl+Shift+S = AddSubsection</span></div>
+    </div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">Always use Ctrl+Shift+[letter] for macro shortcuts. Never use single Ctrl+[letter].</div></div>
+  </div>
+
+  <!-- ERROR 006 -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 006</span><h3>Nested Array syntax error in VBA</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">ByRef argument type mismatch when using <span class="inline-code">Array(Array(...))</span> with sub-indexing like <span class="inline-code">steps(i)(0)</span></div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">VBA Variant arrays don't support sub-indexing with <span class="inline-code">(i)(0)</span> syntax. This pattern works in Python, JavaScript, and most modern languages but not VBA.</div></div>
+    <div class="field-row"><div class="field-label">Fix</div><div class="field-val">
+      <div class="code-block"><span class="comment">' WRONG — causes ByRef mismatch:</span>
+steps = Array(Array("Step 1", "Do this"), Array("Step 2", "Do that"))
+For i = 0 To UBound(steps)
+    Call WriteRow(ws, r, steps(i)(0), steps(i)(1))
+Next i
+
+<span class="comment">' CORRECT — use explicit calls:</span>
+Call WriteRow(ws, r, "Step 1", "Do this")
+Call WriteRow(ws, r, "Step 2", "Do that")</div>
+    </div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">Avoid nested <span class="inline-code">Array()</span> in VBA. Use explicit calls or a 2D array with proper indexing.</div></div>
+  </div>
+
+  <!-- ERROR 007 -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 007</span><h3>openpyxl CF colours transparent — alpha prefix</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">CF colours built via Python/openpyxl appear completely transparent in Excel despite the correct colour values being set.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">openpyxl writes colour values with <span class="inline-code">00</span> alpha prefix (e.g. <span class="inline-code">00E2EFDA</span>) instead of <span class="inline-code">FF</span> (fully opaque). Excel interprets <span class="inline-code">00</span> alpha as fully transparent.</div></div>
+    <div class="field-row"><div class="field-label">Diagnosis prompt</div><div class="field-val"><em>"the conditional formatting is all fucked up and things that are an action are black text and when i toggle action on and off no formatting changes"</em></div></div>
+    <div class="field-row"><div class="field-label">Fix</div><div class="field-val">
+      The real fix: don't use openpyxl for CF. If you must:
+      <div class="code-block"><span class="comment"># Post-process to fix alpha prefix — unreliable, use as last resort only</span>
+def fix_alpha(styles):
+    dxf_match = re.search(r'(&lt;dxfs[^&gt;]*&gt;)(.*?)(&lt;/dxfs&gt;)', styles, re.DOTALL)
+    fixed = re.sub(r'rgb="00([0-9A-Fa-f]{6})"', r'rgb="FF\1"', dxf_match.group(2))
+    return styles.replace(dxf_match.group(2), fixed)</div>
+    </div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">For any project involving CF, build and apply CF through VBA only. Never use openpyxl for CF rules.</div></div>
+  </div>
+
+  <!-- ERROR 008 -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 008</span><h3>SaveAs fails on SharePoint-synced files</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">Runtime error 1004 on <span class="inline-code">wb.SaveAs</span> when file was opened from SharePoint.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">SharePoint-opened files have a cloud URL as their FullName path. VBA's SaveAs cannot write to cloud URLs. Also if the file was already renamed by a previous SaveAs, the second call conflicts.</div></div>
+    <div class="field-row"><div class="field-label">Diagnosis prompt</div><div class="field-val"><em>"it said it did it but i cant see it in the folder"</em></div></div>
+    <div class="field-row"><div class="field-label">Fix</div><div class="field-val">
+      <div class="code-block"><span class="comment">' Use SaveCopyAs — not SaveAs</span>
+<span class="comment">' Use local OneDrive sync path — not the SharePoint URL</span>
+currentPath = "C:\Users\username\CompanyName\FolderName\"
+wb.SaveCopyAs Filename:=currentPath & newFileName</div>
+    </div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">For SharePoint files, always use <span class="inline-code">SaveCopyAs</span>. Always open files from the local synced folder in File Explorer — never from the browser URL.</div></div>
+  </div>
+
+  <!-- ERROR 009 -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 009</span><h3>Date format displaying as US instead of Australian</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">Dates showing as 04/07/2026 (April 7) instead of 07/04/2026 (7 April). Noticed by the boss, not during development.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">Dates stored correctly as Excel serial numbers but cell NumberFormat not explicitly set. Excel defaults to system locale, which may be US format on Australian machines with mixed locale settings.</div></div>
+    <div class="field-row"><div class="field-label">Diagnosis prompt</div><div class="field-val"><em>"in the one i did for work my boss just noticed"</em></div></div>
+    <div class="field-row"><div class="field-label">Fix</div><div class="field-val">
+      <div class="code-block"><span class="comment">' Always set explicitly — never assume locale</span>
+wsAR.Range("D4:D103").NumberFormat = "DD/MM/YYYY"
+wsAR.Range("G4:G103").NumberFormat = "DD/MM/YYYY"
+wsAR.Cells(arRow, 7).NumberFormat = "DD/MM/YYYY"</div>
+    </div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">Always explicitly set <span class="inline-code">NumberFormat = "DD/MM/YYYY"</span> on any date column. Never assume system locale will handle it correctly. Never use <span class="inline-code">Format(Now(), "DD/MM/YYYY")</span> — use <span class="inline-code">Date</span> to write the actual date value, then format the cell.</div></div>
+  </div>
+
+  <!-- ERROR 010 -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 010</span><h3>For Each on Shapes fails with msoShapeTypeMax</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">Error or unexpected behaviour when checking shape type using <span class="inline-code">msoShapeTypeMax</span> constant in a For Each loop.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val"><span class="inline-code">msoShapeTypeMax</span> is an unreliable constant that varies between Office versions and platforms.</div></div>
+    <div class="field-row"><div class="field-label">Fix</div><div class="field-val">
+      <div class="code-block"><span class="comment">' WRONG — unreliable across Office versions:</span>
+If shp.Type = msoShapeTypeMax Then ...
+
+<span class="comment">' CORRECT — check by name, always reliable:</span>
+For Each shp In ws.Shapes
+    If shp.Name = "btnRefreshAR" Then
+        shp.Fill.ForeColor.RGB = RGB(80, 91, 64)
+    End If
+Next shp</div>
+    </div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">Check shapes by name, not by type constant. Give shapes meaningful names when you create them and reference those names in macros.</div></div>
+  </div>
+
+  <!-- ERROR 011 -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 011</span><h3>XML manipulation causes cascading file corruption</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">After Python/openpyxl writes to an xlsx file, CF colours are transparent, fills don't show, formulas break, or Excel opens with repair warnings.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">xlsx/xlsm files are ZIP archives with highly interdependent XML files. Any manual edit that misses one relationship, uses wrong alpha values, writes wrong patternType, or breaks namespace declarations causes silent failures that are extremely difficult to debug.</div></div>
+    <div class="field-row"><div class="field-label">Diagnosis prompts</div><div class="field-val">
+      <em>"PLEASE DOCUMENT THE DANGERS OF .XML THOROUGHLY"</em><br>
+      <em>"xml does not work so no do not do that"</em><br>
+      <em>"are you trying to do this with XML again? cos we know that never works right?"</em>
+    </div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">Never edit xlsx/xlsm XML directly. Write VBA macros. Let Excel's own engine handle the XML. This is the same rule as the Cardinal Rule — restated here because it was violated repeatedly after being agreed.</div></div>
+  </div>
+
+  <!-- ERROR 012 -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 012</span><h3>XML colour scan returns false clean result</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">Python scan of xlsx reports "no blue fills found" but the file visually shows blue section headers everywhere.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">Blue colours were stored in cellXfs as border and font colours — not as direct fill colours. The scan was only checking fill colours.</div></div>
+    <div class="field-row"><div class="field-label">Fix</div><div class="field-val">
+      When scanning for colours, check ALL of these locations:
+      <div class="code-block"><span class="comment"># 1. Fill colours in cellXfs</span>
+<span class="comment"># 2. Font colours in cellXfs</span>
+<span class="comment"># 3. Border colours in cellXfs</span>
+<span class="comment"># 4. Tab colour in sheetPr</span>
+<span class="comment"># 5. Theme colours in theme1.xml</span>
+<span class="comment"># 6. Row-level styles (customFormat="1" on row elements)</span>
+<span class="comment"># 7. CF dxf colours (separate section from cellXfs)</span></div>
+    </div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">Visual evidence from a screenshot is more reliable than XML parsing alone. When a scan says something is clean but it looks wrong — trust your eyes.</div></div>
+  </div>
+
+  <!-- ERROR 013 -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 013</span><h3>bgColor vs fgColor — VBA writes CF fills as bgColor regardless of file history</h3><span class="tag tag-red">Definitive finding</span></div>
+    <div class="field-row"><div class="field-label">The finding</div><div class="field-val">After starting completely fresh with a brand new blank xlsm file — no openpyxl history, no XML corruption — VBA still wrote CF fills as <span class="inline-code">bgColor</span> instead of <span class="inline-code">fgColor</span>. This proves the bug is NOT caused by openpyxl corruption. It is how Excel itself writes CF fills when VBA sets <span class="inline-code">.Interior.Pattern = xlSolid</span> + <span class="inline-code">.Interior.Color</span>.</div></div>
+    <div class="field-row"><div class="field-label">Why bgColor is invisible</div><div class="field-val">In Excel's XML spec, <span class="inline-code">bgColor</span> is the background of a pattern fill — it only shows when a pattern (dots, stripes etc) is applied on top. For a solid fill, the visible colour must be in <span class="inline-code">fgColor</span>. VBA writes to <span class="inline-code">bgColor</span> even when <span class="inline-code">patternType="solid"</span> is set.</div></div>
+    <div class="field-row"><div class="field-label">The only reliable fix</div><div class="field-val">
+      Set CF fill colours manually in Excel's Conditional Formatting manager:<br><br>
+      <strong>Home → Conditional Formatting → Manage Rules → This Worksheet → Edit Rule → Format → Fill tab → select colour</strong><br><br>
+      The formulas and font colours written by VBA are correct. Only the fills need manual setting. Takes approximately 10-15 minutes to set all rules across both Meeting Minutes and Action Register tabs.
+    </div></div>
+    <div class="field-row"><div class="field-label">What VBA can/can't do</div><div class="field-val">
+      <div class="two-col">
+        <div>
+          <div class="rule-box"><div class="rule-label">✅ VBA CAN reliably write</div><p>Cell interior colours (.Interior.Color on regular cells)<br>Font colours and sizes<br>Borders and validation dropdowns<br>Tab colours<br>CF formulas and CF font colours</p></div>
+        </div>
+        <div>
+          <div class="warning-box"><div class="warn-label">❌ VBA CANNOT reliably write</div><p>CF fill colours (.Interior.Color on FormatCondition objects)<br>Always writes bgColor, never fgColor<br>Must be set manually in Manage Rules</p></div>
+        </div>
+      </div>
+    </div></div>
+    <div class="field-row"><div class="field-label">Diagnosis prompts</div><div class="field-val"><em>"everytime i ask you to check it changes"</em> &nbsp;·&nbsp; <em>"have you fixed the formatting issues?"</em> &nbsp;·&nbsp; <em>"why not go to the old one that was already nearly finished"</em></div></div>
+  </div>
+
+  <!-- ERROR 014 -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 014</span><h3>False corruption reports from XML date serial numbers</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">Claude repeatedly flags values like 46119, 46120, 46269 as corrupt or wrong data during XML scanning. They are valid Excel date serial numbers (46119 = 07/04/2026, 46269 = 04/09/2026).</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">XML scanning returns raw cell values. Excel stores dates as integers (days since 1/1/1900). Without converting these to dates before reporting, any date value looks like a random number.</div></div>
+    <div class="field-row"><div class="field-label">Impact</div><div class="field-val">Caused unnecessary alarm about data corruption. Led to wasted debugging time on data that was completely fine. Eroded trust in the audit process. User had to repeatedly correct Claude's false reports.</div></div>
+    <div class="field-row"><div class="field-label">Fix</div><div class="field-val">
+      <div class="code-block"><span class="comment"># Always convert serial numbers when scanning Excel XML</span>
+def excel_serial_to_date(serial):
+    from datetime import datetime, timedelta
+    if serial and str(serial).isdigit():
+        n = int(serial)
+        if 40000 &lt; n &lt; 50000:  <span class="comment"># plausible date range 2009-2036</span>
+            dt = datetime(1899, 12, 30) + timedelta(days=n)
+            return dt.strftime('%d/%m/%Y')
+    return serial</div>
+    </div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">When scanning Excel XML, always convert any integer between 40000-50000 to a date before reporting it. Also remember: TRUE=1, FALSE=0 as booleans. Formula results are stored as their calculated value. Before flagging ANY value as an error, ask: is this how Excel legitimately stores this data type?</div></div>
+  </div>
+
+  <!-- ERROR 015 (ClearContents) -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 015</span><h3>ClearContents on merged cells causes runtime 1004</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">Run-time error 1004: We can't do that to a merged cell — on a <span class="inline-code">.ClearContents</span> or <span class="inline-code">.ClearFormats</span> call.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">Section and subsection header rows are merged across A:K. Calling <span class="inline-code">.ClearContents</span> on a range that includes any merged cell fails with a runtime error.</div></div>
+    <div class="field-row"><div class="field-label">Fix</div><div class="field-val">
+      <div class="code-block"><span class="comment">' Never use Range.ClearContents directly on MM data area</span>
+<span class="comment">' Always loop and check for merged cells first</span>
+Dim cr As Range
+For Each cr In ws.Range("A18:K300")
+    If Not cr.MergeCells Then cr.ClearContents
+Next cr</div>
+    </div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">Never use <span class="inline-code">.ClearContents</span> or <span class="inline-code">.ClearFormats</span> on a bulk range that may contain merged cells. Always loop with a <span class="inline-code">MergeCells</span> check.</div></div>
+  </div>
+
+  <!-- ERROR 016 — Triple quotes CF -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 016</span><h3>CF cellIs rules — triple quotes prevent matching</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">Priority and Status CF rules written correctly in VBA but not firing. Cells contain the value "Critical" but the CF rule for Critical never matches.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">When Formula1 is written with Chr(34) or escaped quotes around the value for a cellIs type rule, Excel wraps it in another set of quotes when writing to XML. This produces triple quotes: <span class="inline-code">"""Critical"""</span> in the XML. The rule then looks for a cell containing "Critical" with actual quote marks — but cells contain <em>Critical</em> without quotes. Rule never matches.</div></div>
+    <div class="field-row"><div class="field-label">Fix</div><div class="field-val">
+      <div class="code-block"><span class="comment">' WRONG — produces """Critical""" in XML, never matches:</span>
+.Add(Type:=xlCellValue, Operator:=xlEqual, Formula1:="""Critical""")
+.Add(Type:=xlCellValue, Operator:=xlEqual, Formula1:=Chr(34) & "Critical" & Chr(34))
+
+<span class="comment">' CORRECT — write with NO quotes. Excel adds its own automatically:</span>
+.Add(Type:=xlCellValue, Operator:=xlEqual, Formula1:="Critical")
+.Add(Type:=xlCellValue, Operator:=xlEqual, Formula1:="In Progress")</div>
+    </div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">For cellIs type CF rules, write <span class="inline-code">Formula1:="Critical"</span> with NO quotes around the value. Excel adds its own quotes when writing the XML for cellIs type. If you add quotes manually, they get double-wrapped.</div></div>
+  </div>
+
+  <!-- ERROR 017 — New feature broke by its own logic -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 017</span><h3>New feature immediately broke by its own logic</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">Date Added column was showing 04/09/2026 instead of today's date after every Refresh from Minutes. Hours spent debugging date functions, number formats, VBA Date() behaviour — nothing helped.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">A "preserve original Date Added" feature had just been built to save existing Date Added values before clearing the AR and restore them after repopulating. It worked perfectly. It faithfully restored the original wrong date (from a previous bad run) every single time. The preservation logic was preventing the fix from taking effect.</div></div>
+    <div class="field-row"><div class="field-label">The fix</div><div class="field-val">Select G4:G103 in the Action Register → press Delete → run Refresh from Minutes. Five seconds. No macro written, no code changed.</div></div>
+    <div class="field-row"><div class="field-label">Diagnosis prompt</div><div class="field-val"><em>"THE SAME THING AS BEFORE PLEASE SORT THIS OUT ITS SO SIMPLE"</em> — which forced a genuine stop-and-think moment rather than another patch attempt.</div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">When a fix "should be working" but keeps failing — stop writing new code. Ask: <em>is something else actively undoing this fix?</em> After building any data-preservation feature, always clear the data it is meant to preserve and do a fresh run to verify the new values are correct BEFORE relying on the preservation logic.</div></div>
+    <div class="field-row"><div class="field-label">Broader lesson</div><div class="field-val">A human with a keyboard beats a macro every time for a one-off data clear. The instinct was to write more code to fix the date. The actual fix was to delete a range of cells.</div></div>
+  </div>
+
+  <!-- ERROR 018 — CF sqref fragmentation -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 018</span><h3>CF rules don't apply to new rows — fragmented sqref</h3><span class="tag tag-red">Day-1 issue</span></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">Status and Priority dropdowns in newly added rows show no colour. Same value in an older row colours correctly. Inconsistent across rows — some new rows colour, most don't. Re-running the End Meeting cleanup macro doesn't fix it.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">Inspecting the file XML: CF rule 1 (Priority) had sqref <span class="inline-code">I15:I16 I18 I23:I26 I28:I29 I33:I45 I49:I53 I77:I80 I95 I85:I87 I120:I122 ...</span> — a fragmented list of segments with gaps between them. Rows 17, 19–22, 27, 30–32, 46–48 etc. had no CF coverage at all. Status (CF 2) had the same Swiss-cheese pattern. When <span class="inline-code">Rows.Insert</span> shifts existing CF segments down, new rows fall in the gaps between segments and inherit nothing. Five additional CF rules with <span class="inline-code">#REF!</span> errors were also present — corpses left behind by historical row/column deletes.</div></div>
+    <div class="field-row"><div class="field-label">Why it accumulates</div><div class="field-val">Every manual edit to CF AppliesTo, every Format Painter, every partial-selection apply, and every <span class="inline-code">Rows.Insert</span> can split a clean range into fragments. Fragmentation is the natural decay state of CF in any heavily-edited template. It's not one bug — it's ongoing rot.</div></div>
+    <div class="field-row"><div class="field-label">The fix</div><div class="field-val">Replace fragmented sqrefs with single contiguous ranges (e.g. <span class="inline-code">H15:H352</span>, <span class="inline-code">I15:I352</span>). Convert <span class="inline-code">cellIs equal to "Critical"</span> rules to <span class="inline-code">expression: =$I15="Critical"</span> — expression rules with absolute column references survive row-insert without splitting. Delete the <span class="inline-code">#REF!</span> corpse rules. Done once, properly, instead of patched per-incident.</div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">Never use <span class="inline-code">cellIs</span> on growing data ranges. Always use <span class="inline-code">expression</span> with <span class="inline-code">$Col</span> absolute reference and a single contiguous sqref that spans the entire foreseeable data range. Audit CF sqrefs whenever the file feels "broken" — fragmentation is invisible from the UI but obvious in the XML.</div></div>
+    <div class="field-row"><div class="field-label">Broader lesson</div><div class="field-val">If a CF rule has been getting "fixed" repeatedly and breaking again, the rule type itself is wrong. Don't keep patching — change the rule type.</div></div>
+  </div>
+
+  <!-- ERROR 019 — Form-control checkbox drift -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 019</span><h3>Form-control checkboxes drift, accumulate, and slow the file</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">Checkboxes in cols C, D, E visibly out of alignment. Some new rows missing checkboxes entirely. File feels sluggish at scale — multi-second wait when adding rows. Random checkboxes left over after row deletes, floating with no linked cell.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">Excel form-control checkboxes are floating <span class="inline-code">Shape</span> objects anchored to cells, not cell content. They drift when row heights change, when rows are inserted, when filters apply, when the sheet is zoomed, and when objects are duplicated. The AddRow macro creates two new <span class="inline-code">CheckBoxes.Add</span> per row insert. Over a year of meetings that's thousands of orphan-prone Shape objects accumulating in the file — known Excel slowdown vector.</div></div>
+    <div class="field-row"><div class="field-label">The fix</div><div class="field-val">Stop using form-control checkboxes for row-level state. Replace cols C, D, E with a single Type dropdown (data validation list: Note, Action, Risk, Decision, Update, Info). CF triggers on text values via expression rules. No floating shapes, no drift, no accumulation, no creation overhead at row-insert time.</div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">Never use form-control checkboxes for row-level data on a growing table. Always use a typed value in a cell (Y/N, TRUE/FALSE, or a dropdown) — they live IN the cell, not floating ON it.</div></div>
+    <div class="field-row"><div class="field-label">Broader lesson</div><div class="field-val">Checkboxes look like cell content but they aren't. They're decorations. If the data needs to drive logic (filter, CF, formulas) it must be in a cell, not on a Shape.</div></div>
+  </div>
+
+  <!-- ERROR 020 — Cleanup macro can't catch its own gaps -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 020</span><h3>End Meeting cleanup macro doesn't fix what it's meant to fix</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">End Meeting macro runs successfully — no errors, no msgbox failures — but Priority and Status CF on new rows still don't apply. The "fix everything" macro doesn't fix it.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">Cleanup macro reapplies cell formatting on rows but does not modify CF AppliesTo ranges. The fragmentation is in the CF rule's sqref, not in the cells. The macro is patching the wrong layer.</div></div>
+    <div class="field-row"><div class="field-label">Why this is the warning sign</div><div class="field-val">The reactionary cleanup-macro pattern itself has failed. Even the catch-all isn't catching everything. When you find yourself adding more code to a cleanup macro to handle one more edge case, the architecture is wrong — the macro is doing the work that the structure should be doing.</div></div>
+    <div class="field-row"><div class="field-label">The fix</div><div class="field-val">Don't extend the cleanup macro. Remove the need for it. Build the structure (clean CF sqref, expression rules, dropdown not checkbox) so that row insert needs no cleanup pass at all.</div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">If a cleanup macro keeps growing, that's the diagnostic. Don't write Cleanup v7 — rebuild the structure that makes Cleanup unnecessary.</div></div>
+  </div>
+
+  <!-- ERROR 021 — ToggleDoneRegister TextFrame error -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 021</span><h3>Hide/Show Done errors after End Meeting / Sync All</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">Clicking Hide/Show Done after running End Meeting or Sync All produces a runtime error and the toggle stops working until the file is reopened.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">ToggleDoneRegister loops <span class="inline-code">For Each shp In ws.Shapes</span> and accesses <span class="inline-code">shp.TextFrame.Characters.Text</span> to update the button label. Not all Shape types have a TextFrame — images, charts, ActiveX controls, and some grouped shapes don't. End Meeting / Sync All can leave or generate Shape objects that break the unconditional TextFrame access.</div></div>
+    <div class="field-row"><div class="field-label">The fix</div><div class="field-val">Filter the loop: only act on the specific button by name (<span class="inline-code">If shp.Name = "btnToggleDone" Then ...</span>) rather than scanning all shapes. Or guard the property access with <span class="inline-code">On Error Resume Next</span> around the TextFrame block. Naming the button is cleaner.</div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">Never <span class="inline-code">For Each shp In Shapes</span> and assume properties exist. Either filter by name/type explicitly, or guard the property access. Sibling macros add and remove Shapes — the loop's assumptions break the moment another macro changes the Shape inventory.</div></div>
+  </div>
+
+  <!-- ERROR 022 — End Meeting populates AR with Project blank -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 022</span><h3>End Meeting populates Action Register but Project column is blank</h3></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">End Meeting macro completes. Action Register shows new rows for ticked actions. All columns populate correctly except Project (col A) which arrives blank.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">PopulateActionRegister reads MM col L (hidden Project name) and writes it to AR col A. AddRow does copy col L from the row above on insert. But manual row inserts (right-click → Insert) skip AddRow and leave col L empty. Subsections inserted before any data row also have nothing to copy from. PopulateActionRegister then reads "" and writes "" to AR.</div></div>
+    <div class="field-row"><div class="field-label">The fix</div><div class="field-val">Two changes. (1) PopulateActionRegister fallback: if MM col L is empty for the row being copied, walk upward to find the most recent non-empty col L value (i.e. the section's Project name lives somewhere above). (2) Reduce the dependency: in the Type-dropdown / flat-table architecture, Project becomes col A and is visible/editable directly — no hidden col L synchronisation needed at all.</div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">Hidden columns that mirror visible state are a fragility magnet. Anything that can drift, will drift. Where possible, eliminate the hidden mirror; where not possible, make the macro defensive about it being empty.</div></div>
+  </div>
+
+  <!-- ERROR 023 — Dropdown literal-quote leakage -->
+  <div class="card">
+    <div class="card-hdr"><span class="num red">ERROR 023</span><h3>Data validation dropdowns leak literal quote characters into first and last values</h3><span class="tag tag-red">Recurring</span></div>
+    <div class="field-row"><div class="field-label">Symptom</div><div class="field-val">After running a macro that creates dropdowns, the first option in the list displays as <span class="inline-code">"Active</span> (with leading double-quote) and the last option as <span class="inline-code">On Hold"</span> (with trailing double-quote). When a user types or selects them, the cell value contains the literal quote and CF rules that test <span class="inline-code">$A2="Active"</span> fail to match.</div></div>
+    <div class="field-row"><div class="field-label">Root cause</div><div class="field-val">When generating VBA code that adds list validation, Claude wraps the comma-separated list in double quotes for the <span class="inline-code">Formula1</span> argument: <span class="inline-code">Formula1:="""Active,DLP,Closed,On Hold"""</span>. The triple-quote pattern is intended to produce a literal Excel formula like <span class="inline-code">"Active,DLP,Closed,On Hold"</span>. Wrong: in Excel data validation, the quotes are NOT part of the list — they get stored and Excel splits the string on commas, leaving the literal quote attached to the first and last values.</div></div>
+    <div class="field-row"><div class="field-label">The fix</div><div class="field-val">Pass the list WITHOUT outer quotes. The correct VBA is:<br><span class="inline-code">.Add Type:=xlValidateList, Formula1:="Active,DLP,Closed,On Hold"</span><br>Note: just plain double quotes around the whole list-as-string. Excel parses the comma-separated values directly. No outer escaping needed.</div></div>
+    <div class="field-row"><div class="field-label">How to verify the fix</div><div class="field-val">Open the dropdown in Excel. The first option should be exactly <span class="inline-code">Active</span>, not <span class="inline-code">"Active</span>. Pick the first option, then check the cell — formula bar should show <span class="inline-code">Active</span>, not <span class="inline-code">"Active</span>.</div></div>
+    <div class="field-row"><div class="field-label">Rule</div><div class="field-val">When writing VBA <span class="inline-code">Validation.Add</span> calls with a literal list, the syntax is <span class="inline-code">Formula1:="value1,value2,value3"</span> — the outer quotes are VBA string delimiters, not part of the list. Do NOT use <span class="inline-code">"""value1,value2"""</span> (triple-quote pattern) for this case. That pattern is correct for embedding a literal quote inside a formula (like <span class="inline-code">=$D2="Action"</span>) — different situation, different escaping.</div></div>
+    <div class="field-row"><div class="field-label">Why this is a recurring class</div><div class="field-val">This is the second VBA quote-escaping bug logged here (see Error 016 — triple-quotes in CF formulas). VBA string literals using doubled-quotes (<span class="inline-code">""</span>) for embedded quotes is a syntax that's easy to over- or under-apply. The correct rule depends on what the destination string needs to be: an Excel formula starting with <span class="inline-code">=</span> needs embedded quotes around its string literals; a validation list does not. Claude must check the destination format before deciding how many quotes to write.</div></div>
+    <div class="field-row"><div class="field-label">Broader lesson</div><div class="field-val">If a generated VBA pattern produces visible quote characters in the output, the escaping was wrong. Test by opening the dropdown and looking at the first/last value — if they have stray quotes, regenerate with one less level of escaping.</div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- STRATEGIES -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="strategies" class="section">
+  <div class="section-banner">
+    <div class="eyebrow">Part 3</div>
+    <h2>Strategies</h2>
+    <p>Eight proven strategies that emerged from real failures. Each one was discovered the hard way.</p>
+  </div>
+
+  <div class="strategy-card">
+    <div class="strategy-hdr">
+      <div class="strategy-num">1</div>
+      <div class="strategy-title-block"><h3>The Stepwise Approach</h3><div class="stag">Break it down. Test each piece. Never batch more than 50 lines.</div></div>
+    </div>
+    <div class="strategy-body">
+      <p><strong>What:</strong> Break complex builds into one thing at a time. Test each piece before moving to the next.</p>
+      <p><strong>Why it works:</strong> Large macros have compounding errors. A 300-line macro that fails leaves you with nothing. Three 100-line macros that each work give you a working system you can extend. Small macros are also much easier to replace when requirements change.</p>
+      <div class="strategy-prompt">"lets do this slower step by step in an effort to learn as we go and solve each thing at a time"</div>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>Never build a macro longer than ~50 lines without testing it first in isolation. If it needs to be longer, split it into sub-routines and test each one.</p></div>
+    </div>
+  </div>
+
+  <div class="strategy-card">
+    <div class="strategy-hdr">
+      <div class="strategy-num">2</div>
+      <div class="strategy-title-block"><h3>The Pre-flight Check</h3><div class="stag">Demand debugging before you paste anything.</div></div>
+    </div>
+    <div class="strategy-body">
+      <p><strong>What:</strong> Ask Claude to syntax-check and debug every macro before you run it.</p>
+      <p><strong>Why it works:</strong> Catches structural errors before they become runtime errors that corrupt your file. A 30-second pre-flight check saves a 30-minute debugging session.</p>
+      <p><strong>What to ask Claude to check specifically:</strong></p>
+      <ul>
+        <li>Sub/End Sub balance</li>
+        <li>With/End With balance</li>
+        <li>For/Next and Do/Loop balance</li>
+        <li>Dim statements inside loops (must all be at top)</li>
+        <li>Duplicate Dim names</li>
+        <li>Any use of <span class="inline-code">ws.DisplayGridlines</span> (must be ActiveWindow)</li>
+        <li>Any <span class="inline-code">.Interior.Color</span> on FormatCondition without <span class="inline-code">.Interior.Pattern = xlSolid</span> first</li>
+      </ul>
+      <div class="strategy-prompt">"please triple check and debug this one and confirm you have — have you checked? are you SURE?"</div>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>Every macro, every time — ask for a pre-flight check before running. Don't accept "it looks correct" — ask for the specific check results.</p></div>
+    </div>
+  </div>
+
+  <div class="strategy-card">
+    <div class="strategy-hdr">
+      <div class="strategy-num">3</div>
+      <div class="strategy-title-block"><h3>The File Upload Check</h3><div class="stag">Upload the actual file before attempting any fix.</div></div>
+    </div>
+    <div class="strategy-body">
+      <p><strong>What:</strong> Upload the actual xlsm file and ask Claude to inspect it before attempting to fix anything.</p>
+      <p><strong>Why it works:</strong> Claude can read the XML inside the xlsx/xlsm and see exactly what's stored — colours, formulas, CF rules, shared strings, validations, column widths, merge cells. This reveals bugs that are completely invisible in Excel's UI.</p>
+      <p><strong>Important caveat:</strong> Claude's XML assessments have been wrong multiple times. Always treat them as hypotheses to verify — not confirmed facts. If Claude says "data is in the wrong column" — check before believing it.</p>
+      <div class="strategy-prompt">"can you search thru the file and be sure you have seen all the colour issues and errors before making a list"</div>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>Always upload the current file before attempting any formatting, CF, or formula fix. But verify Claude's findings before acting on them.</p></div>
+    </div>
+  </div>
+
+  <div class="strategy-card">
+    <div class="strategy-hdr">
+      <div class="strategy-num">4</div>
+      <div class="strategy-title-block"><h3>Show Before You Build — The Mockup-First Approach</h3><div class="stag">The single most underused technique in AI-assisted development.</div></div>
+    </div>
+    <div class="strategy-body">
+      <p><strong>What:</strong> Before writing any significant code, build a visual mockup as an interactive HTML page. Review it. Change it. Get stakeholder sign-off. Then build.</p>
+      <p><strong>Why it matters:</strong> Every hour spent debugging a macro that built the wrong thing is wasted. Every argument about column structure after the spreadsheet is half-built costs twice as much to fix. A mockup costs 5 minutes. Rebuilding costs hours.</p>
+      <p><strong>Why this works specifically with AI:</strong> A human designer building a mockup takes hours. Claude can render a fully interactive, properly styled, navigable HTML mockup in minutes — using real data from the actual project. The mockup IS the decision document. Share it directly, get sign-off, build once.</p>
+      <h4>The four mockups that saved this project</h4>
+      <ul>
+        <li><strong>Colour theme selection:</strong> Eucalyptus vs navy options rendered side by side with real spreadsheet row previews. Decision made in 30 seconds. No rework.</li>
+        <li><strong>Priority colour options:</strong> Four colour schemes shown against real status row colours. Picked the right one before writing a single CF rule.</li>
+        <li><strong>AR formatting decision:</strong> Whole-row status colours vs badge-only approach. Decided on badge-only before building anything — saved rebuilding the entire CF system.</li>
+        <li><strong>Risk &amp; Decision Register design:</strong> The highlight example. A five-tab interactive document showing best-practice field structures per ISO 31000 and PRINCE2, step-by-step walkthroughs of both design options, a full comparison table, and a recommendation with reasoning. Incorporated the manager's specific requirement — alternatives considered field in Decision Register (an audit requirement in local government). Shared directly with the Principal Project Delivery manager. A governance decision resolved in one meeting instead of weeks of back-and-forth.</li>
+      </ul>
+      <div class="strategy-prompt">"lets have a webpage with toggles and buttons of the exact document we are trying to build and how it SHOULD look and work"</div>
+      <div class="golden">Show before you build &nbsp;·&nbsp; Review before you code &nbsp;·&nbsp; Agree before you commit</div>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>Before building any new tab, register, formatting system, or structural change — mockup first. Use interactive HTML. Share with stakeholders. Get sign-off. Build once.</p></div>
+    </div>
+  </div>
+
+  <div class="strategy-card">
+    <div class="strategy-hdr">
+      <div class="strategy-num">5</div>
+      <div class="strategy-title-block"><h3>The Archive Pattern</h3><div class="stag">Save state at the end of every session.</div></div>
+    </div>
+    <div class="strategy-body">
+      <p><strong>What:</strong> At the end of every session, ask Claude to save a complete state summary — all decisions made, colour codes confirmed, macro names, column positions, remaining to-do list in priority order.</p>
+      <p><strong>Why it works:</strong> Claude's context window has limits. Long conversations get compacted. Without an archive, the next session starts from scratch and re-establishes everything that was already decided.</p>
+      <p><strong>What the archive should contain:</strong></p>
+      <ul>
+        <li>Current confirmed column map for all sheets</li>
+        <li>What is working and what still needs doing</li>
+        <li>All confirmed colour hex codes</li>
+        <li>All macro names and keyboard shortcuts</li>
+        <li>All design decisions made and why</li>
+        <li>The to-do list in priority order</li>
+      </ul>
+      <div class="strategy-prompt">"can you be sure you can pick up where we left off tomorrow please"</div>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>End of every session: ask Claude to save a full state archive. Start of every session: reference the last archive before writing any code. Never start a new chat mid-project — the conversation history IS the memory.</p></div>
+    </div>
+  </div>
+
+  <div class="strategy-card">
+    <div class="strategy-hdr">
+      <div class="strategy-num">6</div>
+      <div class="strategy-title-block"><h3>The Root Cause Demand</h3><div class="stag">Stop accepting patches. Demand the diagnosis.</div></div>
+    </div>
+    <div class="strategy-body">
+      <p><strong>What:</strong> When something fails repeatedly, refuse another patch attempt. Demand the root cause.</p>
+      <p><strong>Why it works:</strong> Forces genuine diagnosis rather than guessing. Surfaces the real issue rather than its symptoms. Every time a patch was accepted in this project instead of demanding the root cause, the problem came back — usually worse.</p>
+      <p><strong>Examples of root causes found this way:</strong></p>
+      <ul>
+        <li>bgColor vs fgColor in CF XML — found after refusing "try setting xlSolid first" for the fourth time</li>
+        <li>Triple quotes in cellIs CF formulas — found after refusing "try adding a stopIfTrue" twice</li>
+        <li>Date preservation logic restoring bad dates — found after refusing "let me rewrite the date format macro" twice</li>
+      </ul>
+      <div class="strategy-prompt">"everytime i ask you to check it changes... please confirm the latest macro is the right one? i just need to run this macro and it will undo all the incorrect stuff"</div>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>Any error that appears more than twice: stop patching. Say: I need the root cause, not another fix attempt. Don't accept "this should fix it" — ask "why was this happening in the first place?"</p></div>
+    </div>
+  </div>
+
+  <div class="strategy-card">
+    <div class="strategy-hdr">
+      <div class="strategy-num">7</div>
+      <div class="strategy-title-block"><h3>The Manual Step Approach</h3><div class="stag">Can the user do this in under 2 minutes? If yes — don't write a macro.</div></div>
+    </div>
+    <div class="strategy-body">
+      <p><strong>What:</strong> Before writing any macro, ask whether the user can do the same thing manually in under 2 minutes. If yes — give manual instructions and save the macro for things that genuinely require code.</p>
+      <div class="golden">Macros write CONTENT and FORMATTING &nbsp;·&nbsp; Humans move STRUCTURE</div>
+      <table class="data-table" style="margin-top:12px">
+        <thead><tr><th>Task</th><th>Manual or macro?</th></tr></thead>
+        <tbody>
+          <tr><td>Insert / delete / move columns</td><td class="bad">ALWAYS manual — macros hit merged cells and corrupt data</td></tr>
+          <tr><td>Hide / unhide columns</td><td class="bad">ALWAYS manual — right-click the column header</td></tr>
+          <tr><td>Change dropdown list values</td><td class="bad">Manual — Data Validation dialog, select range, type list</td></tr>
+          <tr><td>Clear a range of data</td><td class="bad">Manual — select + Delete key</td></tr>
+          <tr><td>Fix a formula in one cell</td><td class="bad">Manual — type it directly</td></tr>
+          <tr><td>Apply formula to a range</td><td class="bad">Manual — type in first cell, drag down with $ anchors</td></tr>
+          <tr><td>Any operation on merged cells</td><td class="bad">ALWAYS manual — macros fail with runtime 1004</td></tr>
+          <tr><td>Apply CF to a large range</td><td class="good">Macro for formulas — but fills must be set manually in Manage Rules</td></tr>
+          <tr><td>Write formulas to 100+ rows</td><td class="good">Macro</td></tr>
+          <tr><td>Populate register from minutes</td><td class="good">Macro</td></tr>
+        </tbody>
+      </table>
+      <h4>Real time comparison from this project</h4>
+      <table class="data-table">
+        <thead><tr><th>Approach</th><th>Time spent</th><th>Errors</th></tr></thead>
+        <tbody>
+          <tr><td>Macro to insert columns</td><td class="bad">3+ hours</td><td class="bad">Multiple crashes, data corruption</td></tr>
+          <tr><td>Manual column insert</td><td class="good">2 minutes</td><td class="good">Zero</td></tr>
+          <tr><td>Macro to fix owner dropdown</td><td class="bad">30 minutes</td><td class="bad">Merged cell runtime errors</td></tr>
+          <tr><td>Manual Data Validation dialog</td><td class="good">2 minutes</td><td class="good">Zero</td></tr>
+          <tr><td>Macro to clear bad data</td><td class="bad">15 minutes</td><td class="bad">Loop and range issues</td></tr>
+          <tr><td>Select + Delete key</td><td class="good">5 seconds</td><td class="good">Zero</td></tr>
+        </tbody>
+      </table>
+      <div class="strategy-prompt">"let me add the columns manually and you just help me populate them"</div>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>If a human can do it in under 2 minutes with a mouse, don't write a macro for it.</p></div>
+    </div>
+  </div>
+
+  <div class="strategy-card">
+    <div class="strategy-hdr">
+      <div class="strategy-num">8</div>
+      <div class="strategy-title-block"><h3>Prompting Patterns That Work</h3><div class="stag">How you ask determines what you get.</div></div>
+    </div>
+    <div class="strategy-body">
+      <table class="data-table">
+        <thead><tr><th>Instead of asking this</th><th>Ask this instead</th></tr></thead>
+        <tbody>
+          <tr><td>Write a macro to fix the dropdown</td><td class="good">Tell me exactly what to click to fix it myself</td></tr>
+          <tr><td>Write a macro to insert a Priority column</td><td class="good">Guide me to insert it manually, then write just the formula macro</td></tr>
+          <tr><td>Build me an Excel template and send it</td><td class="good">Write me a VBA macro that builds the template when I run it in Excel</td></tr>
+          <tr><td>Can you fix the CF in this file?</td><td class="good">Write me a VBA macro that deletes all CF and rebuilds it from scratch</td></tr>
+          <tr><td>What's wrong with this file?</td><td class="good">Here is the file — scan it and give me a list of issues to verify, not a list of confirmed problems</td></tr>
+          <tr><td>Is this working correctly?</td><td class="good">Here is a screenshot — tell me what you see and flag anything that looks wrong for me to verify</td></tr>
+        </tbody>
+      </table>
+      <h4>System prompt to use at the start of any Excel session with Claude</h4>
+      <div class="code-block">Before writing any macro, tell me if I can do this step manually in under 2 minutes.
+Only write a macro for things that genuinely require code.
+Always pre-flight check every macro for: Sub/End Sub balance, With/End With balance,
+Dim in loops, duplicate Dims, ws.DisplayGridlines usage, and CF rules without xlSolid.
+Treat all XML scan findings as hypotheses — not confirmed facts.</div>
+    </div>
+  </div>
+
+  <div class="strategy-card">
+    <div class="strategy-hdr">
+      <div class="strategy-num">9</div>
+      <div class="strategy-title-block"><h3>The Zoom-Out Question</h3><div class="stag">When the same bug keeps coming back, ask if you're solving the wrong problem.</div></div>
+    </div>
+    <div class="strategy-body">
+      <p><strong>What:</strong> When you've patched the same area three or more times and it keeps breaking in a new way, stop. Don't ask for a better patch. Ask whether the underlying approach is wrong, and whether there's a completely different way of doing this.</p>
+      <p><strong>Why it works:</strong> AI defaults to fixing what's in front of it. It will happily generate Cleanup Macro v8 for you, then v9, then v10. It won't volunteer "the entire pattern is wrong" unless you ask. The zoom-out question forces a different mode — comparing approaches rather than refining one.</p>
+      <p><strong>What to ask for:</strong></p>
+      <ul>
+        <li>"Zoom out — what are we not seeing?"</li>
+        <li>"Suggest a completely different way of doing this"</li>
+        <li>"Is this the right approach at all, or are we patching a doomed pattern?"</li>
+        <li>"Last time you zoomed out you suggested X — what's the equivalent move here?"</li>
+      </ul>
+      <div class="strategy-prompt">"zoom out, suggest a completely different way of doing things if need be? last time you zoomed out you suggested we get rid of the AR altogether and that was genius....what are we not seeing?"</div>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>Three patches on the same problem = zoom out. The next patch will fail too. The right move is to compare approaches, not refine the current one.</p></div>
+      <p><strong>Real example from this project:</strong> Six row-insert symptoms (CF gaps, checkbox drift, dates rendering wrong, headers leaking dropdowns) all got individually patched over weeks. The zoom-out question produced two simplifications in five minutes: replace three checkbox columns with one Type dropdown (kills four bugs), and rebuild CF as expression rules on contiguous ranges (kills the rest). Neither would have come up while patching.</p>
+    </div>
+  </div>
+
+  <div class="strategy-card">
+    <div class="strategy-hdr">
+      <div class="strategy-num">10</div>
+      <div class="strategy-title-block"><h3>The Push-Back Habit</h3><div class="stag">If the AI's plan feels off, say so. Do not let it talk you into its own assumptions.</div></div>
+    </div>
+    <div class="strategy-body">
+      <p><strong>What:</strong> When Claude returns a confident assessment that doesn't match what you're seeing, say "no, that's wrong" and force a re-check from the actual file. Do this even if the answer sounds plausible.</p>
+      <p><strong>Why it works:</strong> Claude will reason from prior conversation context, style guides, and project documentation rather than from the actual current file unless explicitly required to read it. Most "confident wrong" answers come from this. Pushing back forces the file open.</p>
+      <p><strong>The pattern Claude does badly without push-back:</strong></p>
+      <ol>
+        <li>Forms a hypothesis from prior context (project docs, style guide, last conversation)</li>
+        <li>Builds an elaborate plan on that hypothesis</li>
+        <li>Presents the plan with confidence</li>
+        <li>The plan is wrong because the file has changed since the docs were written</li>
+      </ol>
+      <p><strong>What push-back looks like:</strong></p>
+      <ul>
+        <li>"No. The CF doesn't work and Ctrl+Shift+A IS using the macro."</li>
+        <li>"All wrong. Now I have to assume everything you said is wrong."</li>
+        <li>"I'm not convinced. Run multiple checks. Slow down."</li>
+        <li>"Stop sending such long messages — start with error one."</li>
+      </ul>
+      <div class="strategy-prompt">"i'm not convinced this will fix the issue. run a check, run multiple checks, break this down into small steps because it has been an issue since day 1 and you keep rushing into a fix and fucking it up"</div>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>If Claude's answer feels too confident given how little of the file it has actually inspected, that's the signal. Demand a file-level check. Do not accept "based on the project instructions" as evidence.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- VBA PATTERNS -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="patterns" class="section">
+  <div class="section-banner">
+    <div class="eyebrow">Part 4</div>
+    <h2>VBA Pattern Library</h2>
+    <p>Copy-paste ready patterns. All confirmed working in a live corporate Excel environment. All account for the known bugs documented in the Error Index.</p>
+  </div>
+
+  <div class="pattern-card">
+    <div class="pattern-hdr"><span class="pnum">P1</span><h3>Safe CF rule — expression type with solid fill</h3></div>
+    <div style="padding:16px 20px">
+      <div class="callout">The most important VBA pattern in this document. The .Interior.Pattern = xlSolid line must come before .Interior.Color — always, no exceptions.</div>
+      <div class="code-block">With ws.Range("A18:K300").FormatConditions.Add(Type:=xlExpression, Formula1:="=$C18=TRUE")
+    .Interior.Pattern = xlSolid    <span class="comment">' CRITICAL — must come before .Interior.Color</span>
+    .Interior.Color = RGB(255, 243, 205)
+    .Font.Color = RGB(125, 82, 0)
+    .Font.Bold = True
+    .StopIfTrue = False
+End With</div>
+    </div>
+  </div>
+
+  <div class="pattern-card">
+    <div class="pattern-hdr"><span class="pnum">P2</span><h3>Safe CF rule — cellIs type (no quotes in Formula1)</h3></div>
+    <div style="padding:16px 20px">
+      <div class="callout">For cellIs type rules, write the value with NO quotes. Excel adds its own quotes when writing to XML. Adding quotes manually creates triple-quoted values that never match.</div>
+      <div class="code-block"><span class="comment">' NO quotes around the value — Excel handles this automatically for cellIs type</span>
+With ws.Range("I18:I300").FormatConditions.Add(Type:=xlCellValue, Operator:=xlEqual, Formula1:="Critical")
+    .Interior.Pattern = xlSolid
+    .Interior.Color = RGB(192, 0, 0)
+    .Font.Color = RGB(255, 255, 255)
+    .Font.Bold = True
+    .StopIfTrue = False
+End With
+
+With ws.Range("H18:H300").FormatConditions.Add(Type:=xlCellValue, Operator:=xlEqual, Formula1:="In Progress")
+    .Font.Color = RGB(125, 82, 0)
+    .Font.Bold = True
+    .StopIfTrue = False
+End With</div>
+    </div>
+  </div>
+
+  <div class="pattern-card">
+    <div class="pattern-hdr"><span class="pnum">P3</span><h3>Safe DisplayGridlines</h3></div>
+    <div style="padding:16px 20px">
+      <div class="code-block"><span class="comment">' NEVER: ws.DisplayGridlines = False  (compile error)</span>
+<span class="comment">' ALWAYS:</span>
+ws.Activate
+ActiveWindow.DisplayGridlines = False</div>
+    </div>
+  </div>
+
+  <div class="pattern-card">
+    <div class="pattern-hdr"><span class="pnum">P4</span><h3>Safe row type detection — MergeCells not colour</h3></div>
+    <div style="padding:16px 20px">
+      <div class="callout">Never use Interior.Color to detect whether a row is a section header when CF is active. CF overrides the stored colour. Use MergeCells — headers are always merged, data rows never are.</div>
+      <div class="code-block">For r = 18 To 300
+    If ws.Cells(r, 1).MergeCells Then
+        <span class="comment">' Section or subsection header — skip</span>
+    Else
+        <span class="comment">' Data row — process</span>
+        bg = ws.Cells(r, 1).Interior.Color  <span class="comment">' Only read colour AFTER confirming not a header</span>
+    End If
+Next r</div>
+    </div>
+  </div>
+
+  <div class="pattern-card">
+    <div class="pattern-hdr"><span class="pnum">P5</span><h3>Safe date format — always explicit</h3></div>
+    <div style="padding:16px 20px">
+      <div class="code-block"><span class="comment">' Always set explicitly on any date column — never trust system locale</span>
+ws.Range("G18:G300").NumberFormat = "DD/MM/YYYY"
+ws.Range("D4:D103").NumberFormat = "DD/MM/YYYY"
+
+<span class="comment">' When writing a date value in code — use Date not Format(Now(),...)</span>
+wsAR.Cells(arRow, 7).Value = Date                    <span class="comment">' Write actual date value</span>
+wsAR.Cells(arRow, 7).NumberFormat = "DD/MM/YYYY"    <span class="comment">' Then format immediately after</span></div>
+    </div>
+  </div>
+
+  <div class="pattern-card">
+    <div class="pattern-hdr"><span class="pnum">P6</span><h3>Safe ClearContents on sheet with merged cells</h3></div>
+    <div style="padding:16px 20px">
+      <div class="code-block"><span class="comment">' Never: ws.Range("A18:K300").ClearContents  (runtime 1004 on merged cells)</span>
+<span class="comment">' Always loop and check:</span>
+Dim cr As Range
+For Each cr In ws.Range("A18:K300")
+    If Not cr.MergeCells Then cr.ClearContents
+Next cr</div>
+    </div>
+  </div>
+
+  <div class="pattern-card">
+    <div class="pattern-hdr"><span class="pnum">P7</span><h3>Date preservation across register refresh</h3></div>
+    <div style="padding:16px 20px">
+      <div class="warning-box"><div class="warn-label">⚠ Warning</div><p>If old data was corrupt (wrong date), this logic faithfully restores the bad date. Always manually clear the date column before the first clean run after fixing a date issue.</p></div>
+      <div class="code-block"><span class="comment">' Save existing Date Added values before clearing the register</span>
+Dim existingDates As Object
+Set existingDates = CreateObject("Scripting.Dictionary")
+For r = 4 To 103
+    key = Trim(wsAR.Cells(r, 2).Value) & "|" & Trim(wsAR.Cells(r, 3).Value)
+    If wsAR.Cells(r, 7).Value <> "" Then existingDates(key) = wsAR.Cells(r, 7).Value
+Next r
+
+<span class="comment">' After clearing and repopulating — restore original date or write today</span>
+key = Trim(desc) & "|" & Trim(owner)
+If existingDates.Exists(key) Then
+    wsAR.Cells(arRow, 7).Value = existingDates(key)    <span class="comment">' Restore original</span>
+Else
+    wsAR.Cells(arRow, 7).Value = Date                  <span class="comment">' Write today</span>
+End If
+wsAR.Cells(arRow, 7).NumberFormat = "DD/MM/YYYY"</div>
+    </div>
+  </div>
+
+  <div class="pattern-card">
+    <div class="pattern-hdr"><span class="pnum">P8</span><h3>AddRow with correct alternating shade detection</h3></div>
+    <div style="padding:16px 20px">
+      <div class="code-block">Sub AddRow()
+    Dim wsMM As Worksheet: Set wsMM = ThisWorkbook.Sheets("Meeting Minutes")
+    Dim activeRow As Long: activeRow = ActiveCell.Row
+    Dim r As Long, bg As Long, toggle As Boolean, nr As Long
+
+    If activeRow < 18 Then MsgBox "Click a data row first.": Exit Sub
+
+    wsMM.Rows(activeRow + 1).Insert Shift:=xlDown
+    wsMM.Rows(activeRow + 1).ClearContents
+    wsMM.Rows(activeRow + 1).ClearFormats
+    wsMM.Rows(activeRow + 1).RowHeight = 15
+
+    <span class="comment">' Walk from row 18 to new row counting alternating pattern</span>
+    toggle = True  <span class="comment">' white = True</span>
+    For r = 18 To activeRow + 1
+        bg = wsMM.Cells(r, 1).Interior.Color
+        If bg = RGB(31, 56, 100) Or bg = RGB(46, 114, 182) Then
+            toggle = True  <span class="comment">' reset toggle after any header row</span>
+        ElseIf r = activeRow + 1 Then
+            If toggle Then
+                wsMM.Range("A" & r & ":K" & r).Interior.Color = RGB(250, 250, 250)
+            Else
+                wsMM.Range("A" & r & ":K" & r).Interior.Color = RGB(242, 242, 242)
+            End If
+        Else
+            toggle = Not toggle
+        End If
+    Next r
+
+    <span class="comment">' Standard font formatting</span>
+    With wsMM.Range("A" & (activeRow+1) & ":K" & (activeRow+1))
+        .Font.Name = "Arial": .Font.Size = 9
+        .Font.Color = RGB(26, 26, 46): .Font.Bold = False
+        .VerticalAlignment = xlCenter
+    End With
+
+    <span class="comment">' Days Overdue formula</span>
+    nr = activeRow + 1
+    wsMM.Cells(nr, 10).Formula = "=IF(OR(H" & nr & "=""Done"",H" & nr & "=""On Hold"",H" & nr & _
+        "=""Waiting""),"""",IF(NOT(C" & nr & "),"""",IF(G" & nr & "="""","""",IF(TODAY()>G" & nr & _
+        ",TODAY()-G" & nr & ",""""))))"
+    wsMM.Cells(nr, 10).NumberFormat = "0"
+
+    <span class="comment">' Copy hidden project name from current row</span>
+    wsMM.Cells(nr, 12).Value = wsMM.Cells(activeRow, 12).Value
+    wsMM.Cells(nr, 2).Activate
+End Sub</div>
+    </div>
+  </div>
+
+  <div class="pattern-card">
+    <div class="pattern-hdr"><span class="pnum">P9</span><h3>Pre-flight check — macro validation script</h3></div>
+    <div style="padding:16px 20px">
+      <p style="font-size:10px;margin-bottom:10px">Ask Claude to run this check against any macro before you paste it into VBA:</p>
+      <div class="code-block"><span class="comment"># Python pre-flight check for VBA macros</span>
+import re
+
+def preflight(code):
+    issues = []
+    lines = code.split('\n')
+    subs = sum(1 for l in lines if re.match(r'^\s*(Public |Private )?Sub\s+', l))
+    end_subs = sum(1 for l in lines if l.strip() == 'End Sub')
+    withs = sum(1 for l in lines if re.match(r'^\s*With\s+', l))
+    end_withs = sum(1 for l in lines if l.strip() == 'End With')
+    fors = sum(1 for l in lines if re.match(r'^\s*For\s+', l))
+    nexts = sum(1 for l in lines if re.match(r'^\s*Next\b', l))
+    if subs != end_subs: issues.append(f"Sub/End Sub mismatch: {subs}/{end_subs}")
+    if withs != end_withs: issues.append(f"With/End With mismatch: {withs}/{end_withs}")
+    if fors != nexts: issues.append(f"For/Next mismatch: {fors}/{nexts}")
+    if 'DisplayGridlines' in code and 'ActiveWindow' not in code:
+        issues.append("ws.DisplayGridlines used — must be ActiveWindow.DisplayGridlines")
+    dim_names = re.findall(r'^\s*Dim\s+(\w+)\s+As', code, re.MULTILINE)
+    dups = {n for n in dim_names if dim_names.count(n) > 1}
+    if dups: issues.append(f"Duplicate Dims: {dups}")
+    return issues or ["ALL CHECKS PASSED"]</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- WHAT AI GETS WRONG -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="aiproblems" class="section">
+  <div class="section-banner">
+    <div class="eyebrow">Part 5</div>
+    <h2>What AI Gets Wrong — Consistently</h2>
+    <p>These are not one-off errors. These patterns occurred repeatedly and predictably throughout two days of intensive development. Knowing them in advance saves significant frustration.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num red">PROBLEM 1</span><h3>Confident wrong assessments</h3></div>
+    <div class="card-body">
+      <p>Claude made confident statements about what was working or broken that were wrong multiple times per session. The statements were framed as facts, not hypotheses.</p>
+      <h4>Confirmed wrong assessments from this project</h4>
+      <ul>
+        <li>Claimed the AR had duplicate Priority/Status columns — the data was correct</li>
+        <li>Claimed date serial numbers were corrupt data — they were valid Excel dates</li>
+        <li>Claimed CF fills were broken due to the bgColor bug — some were actually working fine</li>
+        <li>Claimed section headers were restored after macro ran — they were not</li>
+        <li>Claimed Status colours were working — they were not</li>
+        <li>Claimed Days Overdue formula was bleeding into Status column — the spreadsheet was completely correct</li>
+        <li>Read screenshots incorrectly multiple times, reporting things as working that were clearly broken</li>
+      </ul>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>Treat every Claude assessment about spreadsheet state as a hypothesis. Verify by clicking the cell, checking Manage Rules, or looking at the actual screen. When Claude says something is working — verify. When Claude says something is broken — verify. Never accept an assessment without checking.</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num red">PROBLEM 2</span><h3>XML column misreading — repeated false reports</h3></div>
+    <div class="card-body">
+      <p>Claude scanned xlsx XML and repeatedly reported that data was "in the wrong column" or "formulas bleeding into adjacent columns." This occurred 6+ times. Every single time, the user confirmed the spreadsheet looked correct. Claude was wrong every time.</p>
+      <h4>Root cause</h4>
+      <p>XML cell references like <span class="inline-code">&lt;c r="H49"&gt;</span> are read correctly but the value inside is misattributed. Formula results, date serials, and boolean values stored in one column get incorrectly mapped to an adjacent column during scanning.</p>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>Never report a column data error without user confirmation. If a value seems unexpected in XML, say: "this seems unexpected — can you click that cell and tell me what you see?" Never state it as a confirmed error.</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num red">PROBLEM 3</span><h3>Macro-first instinct for everything</h3></div>
+    <div class="card-body">
+      <p>The default response to any problem is to write a macro. Column inserts, dropdown fixes, clearing ranges, hiding columns — all faster done manually in seconds than debugging a macro for 30 minutes. The instinct to automate everything is the right instinct applied to the wrong problems.</p>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>Before writing a macro: can the user do this manually in under 2 minutes? If yes, give manual instructions first. Only write a macro if the task genuinely requires code or involves 100+ repetitive operations.</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num red">PROBLEM 4</span><h3>Patching instead of diagnosing</h3></div>
+    <div class="card-body">
+      <p>When a fix doesn't work, the instinct is to write another fix. This compounds errors. Each patch adds complexity, creates new edge cases, and makes the root cause harder to find. Three patch attempts in a row is a sign that the root cause has not been identified.</p>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>Any error that appears more than twice: stop patching. Demand the root cause. "What is actually causing this?" is a more useful question than "How do I fix this?"</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num red">PROBLEM 5</span><h3>Context loss in long conversations</h3></div>
+    <div class="card-body">
+      <p>As conversations get longer, Claude loses track of decisions made earlier — the agreed column map, the confirmed keyboard shortcuts, the to-do list, the colour codes. Things that were settled in session 2 get re-established in session 5. This costs time and sometimes reverses correct decisions.</p>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>Keep a running to-do list visible. Restate the current confirmed column map at the start of any macro-writing session. Save session archives at the end of every session. Never start a new chat mid-project — the conversation history is the only persistent memory.</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num red">PROBLEM 6</span><h3>Suggesting new chats when things get complex</h3></div>
+    <div class="card-body">
+      <p>When a conversation gets long or difficult, Claude may suggest starting a new chat. Starting a new chat loses all context — every column position, every design decision, every confirmed fix. The conversation history is the only memory that persists across sessions. A very long, messy conversation is better than starting over.</p>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>Never start a new chat mid-project. If context is getting lost, ask Claude to re-read the conversation history. The conversation IS the project memory.</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num red">PROBLEM 7</span><h3>Bucketing before reading the file</h3></div>
+    <div class="card-body">
+      <p>Given a list of issues, Claude will categorise them — "Bucket A migration kills these for free, Bucket B one fix solves these, Bucket C new features" — before having read the file. The categorisation looks structured and authoritative, but it's built on assumptions inherited from project docs, style guides, and prior conversation. Once one bucket is wrong (e.g. "row shading is fixed by migration") the whole plan unravels.</p>
+      <p>Worse: the more polished the plan looks, the harder it is to push back on. The user reads a plausibly-structured proposal and trusts it. Then the file gets uploaded, the bucket is wrong, the plan collapses, and the conversation has to restart with prior assumptions to unwind.</p>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>Demand "read the file before bucketing." Don't accept a plan organised around assumptions about the file's current state. The plan must follow the inspection, not precede it.</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num red">PROBLEM 8</span><h3>Confident wrong claims about what other systems will fix</h3></div>
+    <div class="card-body">
+      <p>"Migration will fix this." "Notion solves this natively." "The new template handles this for free." These are dangerous claims because they're plausible, low-cost-feeling for the AI to say, and they're impossible to verify until migration actually happens — by which point months may have passed and people have built plans around the assumption.</p>
+      <p>In practice these claims should always be tagged with the specific mechanism that produces the fix, and that mechanism should be checked. "Migration fixes row shading" — fixes how, exactly? If you can't name the mechanism, the claim isn't grounded.</p>
+      <div class="rule-box"><div class="rule-label">Rule</div><p>Any "X system will fix this" claim must be paired with the specific mechanism and a verification path. "Tables auto-extend CF" is a checkable claim. "Migration will sort it out" is not.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- DESIGN DECISIONS -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="design" class="section">
+  <div class="section-banner">
+    <div class="eyebrow">Part 6</div>
+    <h2>Design Decisions</h2>
+    <p>Four key visual design decisions made during this project. Each was made using an interactive visual mockup before any code was written — validating the mockup-first approach.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num blue">DECISION 1</span><h3>Colour theme</h3></div>
+    <div class="card-body">
+      <p><strong>Options considered:</strong> Engineering Team navy/blue corporate brand vs new eucalyptus/sage green theme for the generic commercial template.</p>
+      <p><strong>Chosen:</strong> Eucalyptus First — warm, professional, distinctively non-government. Works for any team or industry.</p>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-colour" style="background:#505B40"></div><div class="swatch-info"><div class="swatch-name">Deep Sage</div><div class="swatch-vals">RGB(80,91,64)<br>#505B40<br>Section headers</div></div></div>
+        <div class="swatch"><div class="swatch-colour" style="background:#6B7A58"></div><div class="swatch-info"><div class="swatch-name">Mid Sage</div><div class="swatch-vals">RGB(107,122,88)<br>#6B7A58<br>Sub-headers</div></div></div>
+        <div class="swatch"><div class="swatch-colour" style="background:#9BA187"></div><div class="swatch-info"><div class="swatch-name">Soft Sage</div><div class="swatch-vals">RGB(155,161,135)<br>#9BA187<br>Project headers</div></div></div>
+        <div class="swatch"><div class="swatch-colour" style="background:#FDFBF7;border:1px solid #DDD"></div><div class="swatch-info"><div class="swatch-name">Ivory</div><div class="swatch-vals">RGB(253,251,247)<br>#FDFBF7<br>Row odd</div></div></div>
+      </div>
+      <p><em>Note: The EngTeam working file retains the original navy/blue theme. Eucalyptus is for the generic commercial template.</em></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num blue">DECISION 2</span><h3>Status colour scheme</h3></div>
+    <div class="card-body">
+      <p><strong>Options considered:</strong> Pastel/subtle vs high contrast. High contrast chosen for immediate readability during meetings when scanning a full register quickly.</p>
+      <table class="data-table">
+        <thead><tr><th>Status</th><th>Background</th><th>Font colour</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Open</strong></td><td>#F2F2F2 light grey</td><td>#595959 mid grey</td><td>Acknowledged, not yet started</td></tr>
+          <tr><td><strong>In Progress</strong></td><td>#FFF2CC light yellow</td><td>#7D5200 amber</td><td>Actively being worked on</td></tr>
+          <tr><td><strong>Done</strong></td><td>#E2EFDA light green</td><td>#375623 forest green</td><td>Complete — hidden when Hide Done toggled</td></tr>
+          <tr><td><strong>On Hold</strong></td><td>#DDEBF7 light blue</td><td>#1F3864 deep navy</td><td>Paused/blocked — NOT counted as overdue</td></tr>
+          <tr><td><strong>Waiting</strong></td><td>#FCE4D6 light peach</td><td>#843C0C terracotta</td><td>Waiting on another party — NOT counted as overdue</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num blue">DECISION 3</span><h3>Priority badge colour scheme</h3></div>
+    <div class="card-body">
+      <p><strong>Decision:</strong> Traffic light bold solid — most immediately readable. Critical/High/Medium/Low must be instantly distinguishable without reading the text.</p>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-colour" style="background:#C00000"></div><div class="swatch-info"><div class="swatch-name" style="color:#fff;background:#C00000;padding:2px 6px;border-radius:2px;display:inline-block">Critical</div><div class="swatch-vals" style="margin-top:4px">#C00000<br>Font: white</div></div></div>
+        <div class="swatch"><div class="swatch-colour" style="background:#ED7D31"></div><div class="swatch-info"><div class="swatch-name" style="color:#fff;background:#ED7D31;padding:2px 6px;border-radius:2px;display:inline-block">High</div><div class="swatch-vals" style="margin-top:4px">#ED7D31<br>Font: white</div></div></div>
+        <div class="swatch"><div class="swatch-colour" style="background:#FFC000"></div><div class="swatch-info"><div class="swatch-name" style="color:#7D5200;background:#FFC000;padding:2px 6px;border-radius:2px;display:inline-block">Medium</div><div class="swatch-vals" style="margin-top:4px">#FFC000<br>Font: #7D5200</div></div></div>
+        <div class="swatch"><div class="swatch-colour" style="background:#A9D18E"></div><div class="swatch-info"><div class="swatch-name" style="color:#375623;background:#A9D18E;padding:2px 6px;border-radius:2px;display:inline-block">Low</div><div class="swatch-vals" style="margin-top:4px">#A9D18E<br>Font: #375623</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num blue">DECISION 4</span><h3>Action Register row formatting — badge-only vs whole-row status colours</h3></div>
+    <div class="card-body">
+      <p><strong>Options considered:</strong> Whole-row coloured by status vs priority/status badges in their cells only with clean rows.</p>
+      <p><strong>Chosen:</strong> Badge-only. Primary use case is filtering by owner and scanning for overdue. Clean rows with badges make scanning faster. The overdue pink highlight is the only whole-row colour — giving it one unambiguous meaning: needs attention now.</p>
+      <table class="data-table">
+        <thead><tr><th>Row type</th><th>Background</th><th>Condition</th></tr></thead>
+        <tbody>
+          <tr><td><strong style="color:#9C0006">Overdue action row</strong></td><td>#FFC7CE pink</td><td>Action ticked AND status not Done/Hold/Wait AND due date past today</td></tr>
+          <tr><td><strong style="color:#7D5200">Action row</strong></td><td>#FFF3CD amber</td><td>Action checkbox ticked (C=TRUE)</td></tr>
+          <tr><td>Note row (odd)</td><td>#FAFAFA white</td><td>Action not ticked — alternating</td></tr>
+          <tr><td>Note row (even)</td><td>#F2F2F2 grey</td><td>Action not ticked — alternating</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num blue">DECISION 5</span><h3>Header design — Combined B+C approach</h3></div>
+    <div class="card-body">
+      <p>Full-width navy banner with green accent stripes top and bottom. "Engineering Team" in muted blue-grey above the title. Info rows (Date, Location, Minutes by) in a clean grid below at partial width. Shortcuts panel right-aligned spanning the full header height. Logo image inserted manually.</p>
+      <table class="data-table">
+        <thead><tr><th>Element</th><th>Colour / spec</th></tr></thead>
+        <tbody>
+          <tr><td>Banner background</td><td>#1F3864 navy — full width A:K</td></tr>
+          <tr><td>Green accent stripes</td><td>#70AD47 — 3px top, 2px bottom of banner</td></tr>
+          <tr><td>"Engineering Team" label</td><td>#7A9CC8 muted blue-grey, 7pt, wide letter spacing</td></tr>
+          <tr><td>Title text</td><td>White, Arial 13pt bold</td></tr>
+          <tr><td>Info rows</td><td>Alternating #FAFAFA / #F2F2F2, cols A-E</td></tr>
+          <tr><td>Shortcuts panel</td><td>#EEF4FB background, 2px #2E75B6 left border, cols F-K</td></tr>
+          <tr><td>Attendees header</td><td>#1F3864 navy, white text</td></tr>
+          <tr><td>Attendees col headers</td><td>#2E75B6 blue, white text</td></tr>
+          <tr><td>Present marker</td><td>● green #70AD47 bold | ○ grey #CCC absent</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num blue">DECISION 6</span><h3>Type dropdown replaces three checkbox columns</h3><span class="tag tag-red">29/04/2026</span></div>
+    <div class="card-body">
+      <p>Cols C (Action), D (Risk), E (Decision) — currently three form-control checkbox columns — are replaced by a single col D "Type" with a data validation dropdown. Possible values: Note (default), Action, Risk, Decision, Update, Info.</p>
+      <p><strong>What this kills:</strong></p>
+      <ul>
+        <li>Form-control checkbox drift (Error 019) — no more floating Shape objects to anchor</li>
+        <li>~30 lines of CheckBoxes.Add code in AddRow</li>
+        <li>HideTrueFalseText macro (no more <span class="inline-code">;;;</span> number format hack)</li>
+        <li>Long-term file slowdown from accumulated Shapes</li>
+        <li>The need for a separate "Info / Update / FYI" row type — handled natively by the Type dropdown</li>
+      </ul>
+      <p><strong>CF rule changes:</strong> Whole-row amber/pink CF rules switch their trigger from <span class="inline-code">$C15=TRUE</span> to <span class="inline-code">$D15="Action"</span>. Type dropdown values get individual visual treatments via expression CF rules — Risk gets an orange left-stripe, Update gets a teal left-stripe, Decision gets a purple left-stripe. All on contiguous sqref ranges, all using <span class="inline-code">expression</span> rule type.</p>
+      <p><strong>Migration path for existing data:</strong> One-time macro reads cols C/D/E TRUE values for each existing row and writes the corresponding string value to the new col D. Multiple flags on one row (Action AND Risk) take the priority order Action &gt; Decision &gt; Risk &gt; Update &gt; Info, with the secondary classification noted in col K (Notes). Rare in practice — most rows have at most one flag.</p>
+      <table class="data-table">
+        <thead><tr><th>Type value</th><th>Visual treatment</th><th>Drives</th></tr></thead>
+        <tbody>
+          <tr><td>Note (default)</td><td>Standard alternating row shade</td><td>Nothing — context only</td></tr>
+          <tr><td>Action</td><td>Amber row fill (#FFF3CD), or pink (#FFC7CE) if overdue</td><td>Action Register populate</td></tr>
+          <tr><td>Risk</td><td>Orange left-stripe (#ED7D31)</td><td>Risk Register populate</td></tr>
+          <tr><td>Decision</td><td>Purple left-stripe (#7F77DD)</td><td>Decision Register populate</td></tr>
+          <tr><td>Update</td><td>Teal left-stripe (#5DCAA5)</td><td>Lifecycle / status digest</td></tr>
+          <tr><td>Info</td><td>Light grey left-stripe (#B4B2A9)</td><td>FYI digest / no register</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- DISTRIBUTION -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="distribution" class="section">
+  <div class="section-banner">
+    <div class="eyebrow">Part 7</div>
+    <h2>Distribution Strategy</h2>
+    <p>Execute after the template and this document are complete. The goal is profile authority — a better job and consulting opportunities, not passive income.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num green">THE MODEL</span><h3>Free everything. Build profile authority.</h3></div>
+    <div class="card-body">
+      <p><strong>Core philosophy:</strong> Don't sell. Give. Build the profile that gets you a better job and consulting opportunities worth more than any product sales.</p>
+      <div class="golden">LinkedIn (engine) → Substack (home) → Free downloads → Profile authority → Better job</div>
+      <table class="data-table" style="margin-top:16px">
+        <thead><tr><th>Channel</th><th>Role</th><th>Cadence</th></tr></thead>
+        <tbody>
+          <tr><td><strong>LinkedIn</strong></td><td>Engine — drives traffic and reach</td><td>Weekly post, comment-gated downloads</td></tr>
+          <tr><td><strong>Substack</strong></td><td>Home base — depth and relationship</td><td>Fortnightly newsletter, daily Notes</td></tr>
+          <tr><td><strong>Free downloads</strong></td><td>Lead magnet — template + this document</td><td>Evergreen</td></tr>
+          <tr><td><strong>Profile authority</strong></td><td>The actual asset</td><td>Compounding over 12 months</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num green">LINKEDIN</span><h3>Strategy and content plan</h3></div>
+    <div class="card-body">
+      <ul>
+        <li><strong>One post per week</strong> — story-driven, not instructional</li>
+        <li><strong>Comment-gate downloads:</strong> "Comment TEMPLATE and I'll send the link" — comments beat likes for LinkedIn algorithm reach</li>
+        <li><strong>Target audience:</strong> PMs, analysts, team leads in Microsoft 365 environments — anyone who has ever felt trapped by corporate IT restrictions</li>
+      </ul>
+      <h4>Content plan</h4>
+      <table class="data-table">
+        <thead><tr><th>Post</th><th>Content</th></tr></thead>
+        <tbody>
+          <tr><td>Post 1</td><td>"I built a meeting minutes system with AI inside a government IT environment. Here are 13 things that went wrong." — the hook post</td></tr>
+          <tr><td>Post 2</td><td>Free template offer — comment to receive</td></tr>
+          <tr><td>Post 3</td><td>Carousel — 5 lessons from letting AI build Excel files</td></tr>
+          <tr><td>Post 4</td><td>Long-form LinkedIn article — evergreen SEO, detailed walkthrough</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num green">SUBSTACK</span><h3>Home base strategy</h3></div>
+    <div class="card-body">
+      <p><strong>Content pillars:</strong> The Error Log &nbsp;·&nbsp; The Tool &nbsp;·&nbsp; The Honest Take</p>
+      <ul>
+        <li>Fortnightly newsletter — one lesson, one tool, one honest take per issue</li>
+        <li>Daily Substack Notes — short VBA/AI observations, 10-15 minutes</li>
+        <li>Free forever until 500+ subscribers</li>
+      </ul>
+      <h4>Issue plan</h4>
+      <table class="data-table">
+        <thead><tr><th>Issue</th><th>Content</th></tr></thead>
+        <tbody>
+          <tr><td>Issue 1</td><td>"Here's what I'm building and why" — sets the tone and the stakes</td></tr>
+          <tr><td>Issue 2</td><td>Free template release — full walkthrough of how to use it</td></tr>
+          <tr><td>Issue 3</td><td>This document release — prompt engineering guide</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num green">OUTCOMES</span><h3>Realistic 12-month targets</h3></div>
+    <div class="card-body">
+      <table class="data-table">
+        <thead><tr><th>Metric</th><th>Realistic range</th></tr></thead>
+        <tbody>
+          <tr><td>Substack subscribers</td><td>300-800 (niche, high quality, 40%+ open rate)</td></tr>
+          <tr><td>LinkedIn followers (niche)</td><td>1,000-3,000</td></tr>
+          <tr><td>Template downloads</td><td>500-2,000</td></tr>
+          <tr><td>Inbound enquiries</td><td>Consulting, training, speaking opportunities</td></tr>
+          <tr><td>Primary goal</td><td>Profile authority that enables a significantly better job</td></tr>
+        </tbody>
+      </table>
+      <div class="warning-box" style="margin-top:12px"><div class="warn-label">Key risk</div><p>Going quiet when work gets busy. Consistency beats quality. One post per week, every week, for 12 months beats five brilliant posts then silence.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- APPENDIX -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="appendix" class="section">
+  <div class="section-banner">
+    <div class="eyebrow">Appendix</div>
+    <h2>Quick Reference</h2>
+    <p>Column maps, shortcuts, CF colours, formulas — everything you need to start a new session without re-reading the whole document.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num">COLUMN MAP</span><h3>Meeting Minutes — confirmed 10/04/2026</h3></div>
+    <div class="card-body">
+      <table class="data-table">
+        <thead><tr><th>Col</th><th>Content</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>A</strong></td><td>Section / Project</td><td>Width 16</td></tr>
+          <tr><td><strong>B</strong></td><td>Description / Notes</td><td>Wide — main content column</td></tr>
+          <tr><td><strong>C</strong></td><td>Action? (checkbox)</td><td>TRUE/FALSE — drives AR populate and CF amber row</td></tr>
+          <tr><td><strong>D</strong></td><td>Risk? (checkbox)</td><td>TRUE/FALSE — flags for Risk Register</td></tr>
+          <tr><td><strong>E</strong></td><td>Decision? (checkbox)</td><td>TRUE/FALSE — flags for Decision Register</td></tr>
+          <tr><td><strong>F</strong></td><td>Owner</td><td>Dropdown: TM1,TM2,TM3,TM4,TM5,TM6,ALL</td></tr>
+          <tr><td><strong>G</strong></td><td>Due Date</td><td>Format DD/MM/YYYY always</td></tr>
+          <tr><td><strong>H</strong></td><td>Status</td><td>Dropdown: Open/In Progress/Done/On Hold/Waiting</td></tr>
+          <tr><td><strong>I</strong></td><td>Priority</td><td>Dropdown: Critical/High/Medium/Low</td></tr>
+          <tr><td><strong>J</strong></td><td>Days Overdue</td><td>Formula — auto calculated, blank if Done/Hold/Wait</td></tr>
+          <tr><td><strong>K</strong></td><td>Notes / Update</td><td>Free text</td></tr>
+          <tr><td><strong>L</strong></td><td>Project name (hidden)</td><td>Hidden — used by PopulateActionRegister macro</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num">COLUMN MAP</span><h3>Action Register — confirmed 10/04/2026</h3></div>
+    <div class="card-body">
+      <table class="data-table">
+        <thead><tr><th>Col</th><th>Content</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td><strong>A</strong></td><td>Project</td><td>From MM col L (hidden project column)</td></tr>
+          <tr><td><strong>B</strong></td><td>Description</td><td>From MM col B</td></tr>
+          <tr><td><strong>C</strong></td><td>Owner</td><td>From MM col F</td></tr>
+          <tr><td><strong>D</strong></td><td>Due Date</td><td>From MM col G — format DD/MM/YYYY</td></tr>
+          <tr><td><strong>E</strong></td><td>Priority</td><td>From MM col I</td></tr>
+          <tr><td><strong>F</strong></td><td>Status</td><td>From MM col H</td></tr>
+          <tr><td><strong>G</strong></td><td>Date Added</td><td>Auto — today on first add, preserved on subsequent refreshes</td></tr>
+          <tr><td><strong>H</strong></td><td>Notes</td><td>From MM col K</td></tr>
+          <tr><td><strong>I</strong></td><td>Days Overdue</td><td>Formula — auto calculated</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num">SHORTCUTS</span><h3>Keyboard shortcuts</h3></div>
+    <div class="card-body">
+      <table class="data-table">
+        <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><span class="inline-code">Ctrl+Shift+A</span></td><td>Add new row to current section (with alternating shade)</td></tr>
+          <tr><td><span class="inline-code">Ctrl+Shift+R</span></td><td>Add new section header (navy, merged A:K)</td></tr>
+          <tr><td><span class="inline-code">Ctrl+Shift+S</span></td><td>Add new subsection header (blue, dialog prompt for title)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num">CF COLOURS</span><h3>Hex reference for manual Manage Rules setting</h3></div>
+    <div class="card-body">
+      <div class="callout">Remember: CF fill colours cannot be set reliably via VBA (bgColor bug). Always set fills manually in Manage Rules using these hex values.</div>
+      <table class="data-table">
+        <thead><tr><th>Rule</th><th>Fill hex</th><th>Font hex</th><th>Bold?</th></tr></thead>
+        <tbody>
+          <tr><td>Action row background</td><td><span class="inline-code">#FFF3CD</span></td><td><span class="inline-code">#7D5200</span></td><td>No</td></tr>
+          <tr><td>Overdue action row background</td><td><span class="inline-code">#FFC7CE</span></td><td><span class="inline-code">#9C0006</span></td><td>Yes</td></tr>
+          <tr><td>Priority: Critical</td><td><span class="inline-code">#C00000</span></td><td><span class="inline-code">#FFFFFF</span></td><td>Yes</td></tr>
+          <tr><td>Priority: High</td><td><span class="inline-code">#ED7D31</span></td><td><span class="inline-code">#FFFFFF</span></td><td>Yes</td></tr>
+          <tr><td>Priority: Medium</td><td><span class="inline-code">#FFC000</span></td><td><span class="inline-code">#7D5200</span></td><td>Yes</td></tr>
+          <tr><td>Priority: Low</td><td><span class="inline-code">#A9D18E</span></td><td><span class="inline-code">#375623</span></td><td>Yes</td></tr>
+          <tr><td>Status: Open</td><td><span class="inline-code">#F2F2F2</span></td><td><span class="inline-code">#595959</span></td><td>Yes</td></tr>
+          <tr><td>Status: In Progress</td><td><span class="inline-code">#FFF2CC</span></td><td><span class="inline-code">#7D5200</span></td><td>Yes</td></tr>
+          <tr><td>Status: Done</td><td><span class="inline-code">#E2EFDA</span></td><td><span class="inline-code">#375623</span></td><td>Yes</td></tr>
+          <tr><td>Status: On Hold</td><td><span class="inline-code">#DDEBF7</span></td><td><span class="inline-code">#1F3864</span></td><td>Yes</td></tr>
+          <tr><td>Status: Waiting</td><td><span class="inline-code">#FCE4D6</span></td><td><span class="inline-code">#843C0C</span></td><td>Yes</td></tr>
+          <tr><td>Days Overdue: 1-7 days</td><td><span class="inline-code">#ED7D31</span></td><td><span class="inline-code">#FFFFFF</span></td><td>Yes</td></tr>
+          <tr><td>Days Overdue: 8+ days</td><td><span class="inline-code">#C00000</span></td><td><span class="inline-code">#FFFFFF</span></td><td>Yes</td></tr>
+          <tr><td>Summary Overdue &gt; 0</td><td><span class="inline-code">#C00000</span></td><td><span class="inline-code">#FFFFFF</span></td><td>Yes</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><span class="num">FORMULAS</span><h3>Key formulas with correct $ anchors</h3></div>
+    <div class="card-body">
+      <h4>Days Overdue — MM col J (row 18)</h4>
+      <div class="code-block">=IF(OR(H18="Done",H18="On Hold",H18="Waiting"),"",IF(NOT(C18),"",IF(G18="","",IF(TODAY()&gt;G18,TODAY()-G18,""))))</div>
+      <h4>Days Overdue — AR col I (row 4)</h4>
+      <div class="code-block">=IF(OR(F4="Done",F4="On Hold",F4="Waiting"),"",IF(D4="","",IF(TODAY()&gt;D4,TODAY()-D4,"")))</div>
+      <h4>Summary Overdue — col H (row 4, drag down)</h4>
+      <div class="code-block">=COUNTIFS('Action Register'!$C$4:$C$103,A4,
+         'Action Register'!$I$4:$I$103,"&gt;0",
+         'Action Register'!$F$4:$F$103,"&lt;&gt;On Hold",
+         'Action Register'!$F$4:$F$103,"&lt;&gt;Waiting",
+         'Action Register'!$F$4:$F$103,"&lt;&gt;Done")</div>
+      <p style="font-size:10px;color:var(--grey);margin-top:8px">Count rows where: owner matches AND days overdue &gt; 0 AND status is not On Hold, Waiting, or Done.</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .page -->
+
+<script>
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

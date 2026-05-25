@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Engineering Team Meeting Minutes — How To Use</title>
+<style>
+:root {
+  --bg: #FAFAF7;
+  --panel: #FFFFFF;
+  --ink: #1A1A2E;
+  --muted: #5F5E5A;
+  --border: #E5E5E0;
+  --accent: #1F3864;
+  --accent-soft: #DDEBF7;
+  --code-bg: #F4F4F0;
+  --warn: #C00000;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  margin: 0;
+  padding: 24px;
+  line-height: 1.6;
+  font-size: 14px;
+}
+.wrap { max-width: 920px; margin: 0 auto; }
+header {
+  background: var(--accent);
+  color: white;
+  padding: 22px 28px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+header h1 { margin: 0 0 4px; font-size: 22px; font-weight: 500; letter-spacing: 0.2px; }
+header p { margin: 0; opacity: 0.85; font-size: 13.5px; }
+.toc {
+  background: var(--panel);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 24px;
+  margin-bottom: 28px;
+}
+.toc h2 { margin: 0 0 10px; font-size: 13px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; }
+.toc ol { margin: 0; padding-left: 20px; }
+.toc li { margin: 4px 0; font-size: 13.5px; }
+.toc a { color: var(--accent); text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+section {
+  background: var(--panel);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 22px 28px;
+  margin-bottom: 18px;
+}
+section h2 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--accent);
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 0.5px solid var(--border);
+}
+section h3 {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 18px 0 8px;
+}
+section p { margin: 0 0 10px; }
+section ul, section ol { margin: 0 0 12px; padding-left: 20px; }
+section li { margin: 4px 0; }
+.kbd {
+  display: inline-block;
+  background: #1F3864;
+  color: white;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+  font-size: 11.5px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.tag {
+  display: inline-block;
+  font-size: 10.5px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  margin-right: 4px;
+  font-weight: 500;
+}
+.tag.team { background: #444441; color: white; }
+.tag.active { background: #1F3864; color: white; }
+.tag.dlp { background: #0F6E56; color: white; }
+.tag.future { background: #185FA5; color: white; }
+.tag.strategic { background: #534AB7; color: white; }
+.tag.general { background: #5F5E5A; color: white; }
+.tag.closed { background: #5F5E5A; color: white; }
+.tag.action { background: #FFF3CD; color: #806000; font-weight: 600; }
+.tag.risk { background: #FFE4D5; color: #843C0C; font-weight: 600; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0 14px;
+  font-size: 13px;
+}
+table th {
+  background: var(--accent-soft);
+  color: var(--accent);
+  text-align: left;
+  font-weight: 500;
+  padding: 8px 10px;
+  border-bottom: 0.5px solid var(--border);
+}
+table td {
+  padding: 8px 10px;
+  border-bottom: 0.5px solid var(--border);
+  vertical-align: top;
+}
+table td:first-child { font-weight: 500; color: var(--accent); white-space: nowrap; }
+.note {
+  background: #FFF8DC;
+  border-left: 3px solid #806000;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #5F4500;
+  margin: 12px 0;
+  border-radius: 4px;
+}
+.warn {
+  background: #FCE4E4;
+  border-left: 3px solid #C00000;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #8B2E2E;
+  margin: 12px 0;
+  border-radius: 4px;
+}
+code {
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+  font-size: 12.5px;
+}
+.colorbox {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  vertical-align: middle;
+  margin-right: 6px;
+  border: 0.5px solid rgba(0,0,0,0.15);
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Engineering Team Meeting Minutes — How To Use</h1>
+  <p>Engineering Team · v1.0 · May 2026</p>
+</header>
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#sheets">The sheets</a></li>
+    <li><a href="#mm-structure">Meeting Minutes structure</a></li>
+    <li><a href="#colours">Colour code guide</a></li>
+    <li><a href="#workflow">Weekly workflow</a></li>
+    <li><a href="#shortcuts">Keyboard shortcuts &amp; macros</a></li>
+    <li><a href="#troubleshooting">Troubleshooting</a></li>
+  </ol>
+</div>
+
+<section id="overview">
+<h2>1. Overview</h2>
+<p>This is a meeting minutes and action tracking system built in Excel. Take notes during the meeting, mark anything that needs follow-up as <span class="tag action">Action</span> or <span class="tag risk">Risk</span>, and use the AR view to see all open actions filtered.</p>
+<p>Compared to the old version: no checkboxes (use the Type dropdown), no separate Action Register sheet (it's a filter view of Meeting Minutes), no two-way sync to break, and project structure is driven by where rows sit on the sheet.</p>
+</section>
+
+<section id="sheets">
+<h2>2. The sheets</h2>
+<table>
+  <tr><th style="width:160px">Sheet</th><th>What it does</th></tr>
+  <tr><td>Summary</td><td>High-level dashboard view (action counts by owner / status). Optional — review before each meeting if useful.</td></tr>
+  <tr><td>Meeting Minutes</td><td>Where you take notes during the meeting and where actions live. The main working sheet.</td></tr>
+  <tr><td>Risk Register</td><td>Standalone register of project risks. Populated manually as risks are flagged.</td></tr>
+  <tr><td>How To Use</td><td>Quick cheat sheet inside the file. Full guide is the PDF this is based on.</td></tr>
+  <tr><td>Changelog</td><td>Version history of the template. Locked.</td></tr>
+</table>
+</section>
+
+<section id="mm-structure">
+<h2>3. Meeting Minutes structure</h2>
+
+<h3>Header block (rows 1–14)</h3>
+<p>Title, location, date, attendees, keyboard shortcuts panel. Don't edit the structure here — just update the date and tick off attendees each meeting.</p>
+
+<h3>Column headers (row 15)</h3>
+<table>
+  <tr><th style="width:55px">Col</th><th style="width:110px">Header</th><th>What it holds</th></tr>
+  <tr><td>A</td><td>Type</td><td>Dropdown: Action / Risk / blank. Blank = general note. Drives the row's CF.</td></tr>
+  <tr><td>B</td><td>Description</td><td>What was discussed. One clear point per row.</td></tr>
+  <tr><td>C</td><td>Owner</td><td>Dropdown: TM1 / TM2 / TM3 / TM4 / TM5 / TM6 / ALL / AL.</td></tr>
+  <tr><td>D</td><td>Due</td><td>Date the action must be done. DD/MM/YYYY.</td></tr>
+  <tr><td>E</td><td>Status</td><td>Dropdown: Open / In Progress / Done / On Hold / Waiting.</td></tr>
+  <tr><td>F</td><td>Priority</td><td>Dropdown: Critical / High / Medium / Low.</td></tr>
+  <tr><td>G</td><td>Days OD</td><td>Auto-calculated days overdue. Blank if not overdue or not an action.</td></tr>
+  <tr><td>H</td><td>Notes / Update</td><td>Free text. Use for weekly progress or context.</td></tr>
+  <tr><td>I</td><td>Project (hidden)</td><td>Project name on every row. Used by AR view filter. Filled by AddRow / AddProject macros.</td></tr>
+</table>
+
+<h3>Banners</h3>
+<p>Two banner levels stacked above each project's data rows:</p>
+<ul>
+  <li><strong>Lifecycle banner</strong> (full-width, dark colour): TEAM, ACTIVE PROJECTS, DLP PROJECTS, FUTURE PROJECTS, STRATEGIC, GENERAL BUSINESS, CLOSED PROJECTS.</li>
+  <li><strong>Project banner</strong> (full-width, light blue): one per project under its lifecycle. E.g. "The Avenue".</li>
+</ul>
+<p>Lifecycle = where a project sits in the sheet. To move a project from Active to DLP: select the project's banner + all its data rows, cut, paste under the DLP banner. No macro needed.</p>
+</section>
+
+<section id="colours">
+<h2>4. Colour code guide</h2>
+
+<h3>Lifecycle banners</h3>
+<table>
+  <tr><th>Banner</th><th>Fill</th></tr>
+  <tr><td>TEAM</td><td><span class="colorbox" style="background:#444441"></span><code>#444441</code></td></tr>
+  <tr><td>ACTIVE PROJECTS</td><td><span class="colorbox" style="background:#1F3864"></span><code>#1F3864</code></td></tr>
+  <tr><td>DLP PROJECTS</td><td><span class="colorbox" style="background:#0F6E56"></span><code>#0F6E56</code></td></tr>
+  <tr><td>FUTURE PROJECTS</td><td><span class="colorbox" style="background:#185FA5"></span><code>#185FA5</code></td></tr>
+  <tr><td>STRATEGIC</td><td><span class="colorbox" style="background:#534AB7"></span><code>#534AB7</code></td></tr>
+  <tr><td>GENERAL BUSINESS</td><td><span class="colorbox" style="background:#5F5E5A"></span><code>#5F5E5A</code></td></tr>
+</table>
+
+<h3>Project banners</h3>
+<p>Light blue: <span class="colorbox" style="background:#B5D4F4"></span><code>#B5D4F4</code> fill, dark blue text <code>#042C53</code>.</p>
+
+<h3>Row CF rules</h3>
+<table>
+  <tr><th>Rule</th><th>Triggered by</th><th>Result</th></tr>
+  <tr><td>Action row</td><td>Type = Action</td><td><span class="colorbox" style="background:#FFF3CD"></span>Amber row fill</td></tr>
+  <tr><td>Overdue Action</td><td>Type = Action AND Due past today AND Status not Done/On Hold/Waiting</td><td><span class="colorbox" style="background:#FFC7CE"></span>Pink row fill (overrides amber)</td></tr>
+  <tr><td>Risk row</td><td>Type = Risk</td><td><span class="colorbox" style="background:#FFE4D5"></span>Light orange row fill</td></tr>
+</table>
+
+<h3>Status pill (col E)</h3>
+<table>
+  <tr><td><span class="colorbox" style="background:#E1F0E1"></span>Open</td><td><code>#E1F0E1</code></td></tr>
+  <tr><td><span class="colorbox" style="background:#FFF8DC"></span>In Progress</td><td><code>#FFF8DC</code></td></tr>
+  <tr><td><span class="colorbox" style="background:#D5E5F5"></span>Done</td><td><code>#D5E5F5</code></td></tr>
+  <tr><td><span class="colorbox" style="background:#F8E0E0"></span>On Hold</td><td><code>#F8E0E0</code></td></tr>
+  <tr><td><span class="colorbox" style="background:#ECE0F5"></span>Waiting</td><td><code>#ECE0F5</code></td></tr>
+</table>
+
+<h3>Priority pill (col F)</h3>
+<table>
+  <tr><td><span class="colorbox" style="background:#C00000"></span>Critical</td><td><code>#C00000</code> / white text</td></tr>
+  <tr><td><span class="colorbox" style="background:#ED7D31"></span>High</td><td><code>#ED7D31</code> / white text</td></tr>
+  <tr><td><span class="colorbox" style="background:#FFC000"></span>Medium</td><td><code>#FFC000</code> / dark text</td></tr>
+  <tr><td><span class="colorbox" style="background:#BFBFBF"></span>Low</td><td><code>#BFBFBF</code> / white text</td></tr>
+</table>
+</section>
+
+<section id="workflow">
+<h2>5. Weekly workflow</h2>
+
+<h3>Tuesday — during the meeting</h3>
+<ol>
+  <li>Open the file from the synced SharePoint folder. Update the date in the header.</li>
+  <li>Tick off attendees in the attendees table.</li>
+  <li>Take minutes row by row. <span class="kbd">Ctrl + Shift + A</span> adds a new row under the current project. <span class="kbd">Ctrl + Shift + P</span> adds a new project banner if needed.</li>
+  <li>For anything requiring follow-up, set <strong>Type = Action</strong>. Fill in Owner, Due, Status, Priority. Row turns amber automatically.</li>
+  <li>For anything that's a risk to flag, set <strong>Type = Risk</strong>.</li>
+  <li>Save the file.</li>
+</ol>
+
+<h3>Tuesday to Monday — during the week</h3>
+<ol>
+  <li>Open the file. Use the Action Register filter button (or run ShowARView macro) to see only your actions.</li>
+  <li>Update Status as you complete actions. Add notes in col H if helpful.</li>
+  <li>If new risks come up, add them to the Risk Register tab directly.</li>
+  <li>Save when done.</li>
+</ol>
+
+<h3>Next Tuesday — before the meeting</h3>
+<ol>
+  <li>Open the file. Click <strong>Hide / Show Done</strong> button to declutter (hides Done rows).</li>
+  <li>Review the Summary tab — see who has outstanding actions.</li>
+  <li>Take this week's minutes continuing from where you left off.</li>
+</ol>
+</section>
+
+<section id="shortcuts">
+<h2>6. Keyboard shortcuts &amp; macros</h2>
+<table>
+  <tr><th style="width:130px">Shortcut</th><th>What it does</th></tr>
+  <tr><td><span class="kbd">Ctrl + Shift + A</span></td><td>AddRow — insert a new row below the cursor with project name pre-filled.</td></tr>
+  <tr><td><span class="kbd">Ctrl + Shift + P</span></td><td>AddProject — insert a new project banner below the cursor (prompts for project name).</td></tr>
+</table>
+
+<h3>Buttons</h3>
+<table>
+  <tr><th style="width:200px">Button</th><th>What it does</th></tr>
+  <tr><td>Hide / Show Done</td><td>Toggles Done rows on Meeting Minutes.</td></tr>
+  <tr><td>AR View</td><td>Filters Meeting Minutes to show only Action rows.</td></tr>
+  <tr><td>Restore Full View</td><td>Unhides everything.</td></tr>
+  <tr><td>Hide / Show Closed (Risk Register)</td><td>Toggles Closed risks.</td></tr>
+</table>
+</section>
+
+<section id="troubleshooting">
+<h2>7. Troubleshooting</h2>
+<table>
+  <tr><th style="width:240px">Problem</th><th>Fix</th></tr>
+  <tr><td>Row not turning amber</td><td>Check Type column (col A) — must be exactly "Action" from the dropdown.</td></tr>
+  <tr><td>AddRow inserts in the wrong place</td><td>Click a data row first (row 16+), then run. It inserts above the active row.</td></tr>
+  <tr><td>Action Register filter not showing my row</td><td>Check that col I (Project) is filled. AR view filters by Project, so blank Project rows are hidden.</td></tr>
+  <tr><td>Ctrl+Shift+A doesn't work</td><td>Macro not bound. Alt+F8 → AddRow → Options → assign Ctrl+Shift+A.</td></tr>
+  <tr><td>Status / Priority colour wrong</td><td>Open Manage Rules (Home → Conditional Formatting → Manage Rules). Make sure Status/Priority cell rules are above the row-level rules in priority order.</td></tr>
+  <tr><td>File saving to wrong place</td><td>Always open from the synced SharePoint folder in File Explorer, not from the browser.</td></tr>
+  <tr><td>Macro security warning</td><td>Click Enable Content in the yellow bar at the top.</td></tr>
+</table>
+
+<div class="note"><strong>Need to dig deeper?</strong> Anything not in this guide — check with Adina or open the macro archive HTML for the technical history.</div>
+</section>
+
+</div>
+</body>
+</html>

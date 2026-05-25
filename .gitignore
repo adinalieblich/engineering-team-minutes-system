@@ -1,0 +1,47 @@
+# Excel temp/lock files
+~$*.xlsx
+~$*.xlsm
+~$*.xls
+*.tmp
+*.bak
+
+# Working files with real client data - never commit
+working/
+*EMERGENCY_SAVE*
+*_complete.xlsm
+*_FINAL.xlsm
+260*Engineering_Team_Minutes*.xlsm
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.env
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Node (in case docs use any tooling later)
+node_modules/
+
+# Output / generated
+out/
+dist/
+build/
+
+# Real data exports - sanitised versions go in examples/ only
+data/
+exports/

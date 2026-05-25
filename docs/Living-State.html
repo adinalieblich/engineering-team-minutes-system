@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EngTeam Migration — Living State File</title>
+<style>
+:root {
+  --bg: #FAFAF7;
+  --panel: #FFFFFF;
+  --ink: #1A1A2E;
+  --muted: #5F5E5A;
+  --border: #E5E5E0;
+  --accent: #1F3864;
+  --warn: #C00000;
+  --done: #1B5E20;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  margin: 0;
+  padding: 24px;
+  line-height: 1.55;
+  font-size: 14px;
+}
+.wrap { max-width: 920px; margin: 0 auto; }
+header {
+  background: var(--accent);
+  color: white;
+  padding: 22px 28px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+header h1 { margin: 0 0 4px; font-size: 22px; font-weight: 500; }
+header p { margin: 0; opacity: 0.85; font-size: 13px; }
+section {
+  background: var(--panel);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 22px 28px;
+  margin-bottom: 18px;
+}
+section h2 {
+  font-size: 16px; font-weight: 500; color: var(--accent);
+  margin: 0 0 14px; padding-bottom: 8px; border-bottom: 0.5px solid var(--border);
+}
+section h3 { font-size: 13.5px; font-weight: 600; margin: 16px 0 8px; color: var(--ink); text-transform: uppercase; letter-spacing: 0.4px; }
+section ul { margin: 0 0 12px; padding-left: 20px; }
+section li { margin: 5px 0; }
+.task {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 8px 10px;
+  border-bottom: 0.5px dashed var(--border);
+}
+.task:last-child { border-bottom: none; }
+.task .box {
+  display: inline-block; width: 14px; height: 14px;
+  border: 1px solid var(--accent); border-radius: 3px;
+  margin-top: 3px; flex-shrink: 0;
+  background: white;
+}
+.task.done .box { background: var(--done); border-color: var(--done); }
+.task.done .box::after { content: "✓"; color: white; font-size: 11px; line-height: 12px; padding-left: 2px; }
+.task .body { flex: 1; font-size: 13.5px; }
+.task .meta { font-size: 11px; color: var(--muted); display: block; margin-top: 2px; }
+.task.done .body { text-decoration: line-through; color: var(--muted); }
+.warn {
+  background: #FCE4E4; border-left: 3px solid var(--warn);
+  padding: 10px 14px; font-size: 13px; color: #8B2E2E;
+  margin: 12px 0; border-radius: 4px;
+}
+.note {
+  background: #FFF8DC; border-left: 3px solid #806000;
+  padding: 10px 14px; font-size: 13px; color: #5F4500;
+  margin: 12px 0; border-radius: 4px;
+}
+code {
+  background: #F4F4F0; padding: 1px 6px; border-radius: 3px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+  font-size: 12.5px;
+}
+.toc {
+  background: var(--panel); border: 0.5px solid var(--border);
+  border-radius: 8px; padding: 14px 22px; margin-bottom: 22px;
+}
+.toc h2 { margin: 0 0 6px; font-size: 11.5px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.toc ol { margin: 0; padding-left: 20px; font-size: 13.5px; }
+.toc a { color: var(--accent); text-decoration: none; }
+.timestamp {
+  display: inline-block; font-size: 11.5px; color: var(--muted);
+  background: #EEEEE8; padding: 2px 8px; border-radius: 8px;
+  margin-left: 8px; font-weight: 400;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>EngTeam Migration — Living State File <span class="timestamp" style="background:rgba(255,255,255,0.2);color:white;">Last updated: 7 May 2026</span></h1>
+  <p>This file lives in the project. Re-upload at the start of each Claude session so context survives across conversations.</p>
+</header>
+
+<div class="warn"><strong>Claude — read this file FIRST in every session.</strong> Pending tasks are real items that get dropped from memory otherwise. Locked decisions are non-negotiable. Failure modes are recurring mistakes — don't repeat them.</div>
+
+<div class="toc">
+<h2>Live status (as of 7 May 2026, end of session)</h2>
+<div class="warn"><strong>Phase 18 — IN PROGRESS — DO TOMORROW</strong></div>
+<p><strong>Latest file:</strong> <code>Migration_v1_P18_complete.xlsm</code> (uploaded by user)</p>
+<p><strong>Verification result vs EMERGENCY_SAVE source of truth:</strong></p>
+<ul>
+  <li>17 rows still missing</li>
+  <li>21 rows have field mismatches (23 total field changes needed)</li>
+</ul>
+<p><strong>Helper files generated for tomorrow's work:</strong></p>
+<ul>
+  <li><code>Missing_Rows_v2.xlsx</code> — 17 rows to add, grouped by project</li>
+  <li><code>Updates_Needed_v2.xlsx</code> — 23 field changes with P18 row numbers</li>
+</ul>
+<p><strong>Tomorrow's flow:</strong></p>
+<ol>
+  <li>Open <code>P18_complete.xlsm</code></li>
+  <li>Work through <code>Missing_Rows_v2.xlsx</code> — add 17 rows by project (Add Project + Add Row macros)</li>
+  <li>Work through <code>Updates_Needed_v2.xlsx</code> — make 23 field changes by P18 row number</li>
+  <li>Save as <code>Migration_v1_P18_FINAL.xlsm</code></li>
+  <li>Send back to Claude for re-verification (compare against EMERGENCY_SAVE)</li>
+  <li>If clean → Phase 18 complete, move to Phase 19 (printable AR view)</li>
+</ol>
+
+<h3>Source of truth file</h3>
+<p>Always compare against: <code>260505_-_Engineering_Team_Minutes_-_EMERGENCY_SAVE.xlsx</code></p>
+<p>NOT the old.xlsx (different file, different content).</p>
+
+<h3>Verification method (proven this session)</h3>
+<ul>
+  <li>Compound key matching: description + owner (NOT description alone — duplicates with different owners get collapsed)</li>
+  <li>Section/project tracking through merged cells</li>
+  <li>Field-by-field comparison: type, due, status, priority, notes</li>
+  <li>Outputs missing rows + mismatched fields separately</li>
+</ul>
+
+<h2>Sections</h2>
+<ol>
+  <li><a href="#pending">Pending tasks (live to-do)</a></li>
+  <li><a href="#decisions">Locked-in decisions</a></li>
+  <li><a href="#failure-modes">Claude's failure modes</a></li>
+  <li><a href="#how-to-use">How to use this file</a></li>
+</ol>
+</div>
+
+<section id="pending">
+<h2>1. Pending tasks</h2>
+
+<h3>In progress</h3>
+<div class="task">
+  <span class="box"></span>
+  <span class="body"><strong>Wire Date Added column into AddRow macro.</strong> Hidden col J. Auto-stamps current date on row creation. Never overwritten. Functional, not polish.<span class="meta">Phase 9 add-on · doing now</span></span>
+</div>
+
+<h3>Bookmarked for Phase 21 (REWARD/polish)</h3>
+<div class="task">
+  <span class="box"></span>
+  <span class="body">Restore Status pill colours on Summary tab — count cells lost their fills.<span class="meta">Phase 21 · cosmetic</span></span>
+</div>
+<div class="task">
+  <span class="box"></span>
+  <span class="body">Restore Status pill text colours on MM (col E).<span class="meta">Phase 21 · cosmetic</span></span>
+</div>
+<div class="task">
+  <span class="box"></span>
+  <span class="body">Restore Priority pill text colours on MM (col F).<span class="meta">Phase 21 · cosmetic</span></span>
+</div>
+<div class="task">
+  <span class="box"></span>
+  <span class="body">Restore Risk Register fill colours — likelihood/risk rating/status pills lost their fills earlier.<span class="meta">Phase 21 · cosmetic</span></span>
+</div>
+<div class="task">
+  <span class="box"></span>
+  <span class="body">Generate style guide PDF — colours, banner specs, structure.<span class="meta">Phase 21 · documentation</span></span>
+</div>
+
+<h3>Upcoming phases</h3>
+<div class="task">
+  <span class="box"></span>
+  <span class="body"><strong>Phase 18:</strong> Merge recent meeting minutes into new template. Manual copy-paste. Get team a working register urgently.<span class="meta">Phase 18 · urgent</span></span>
+</div>
+<div class="task">
+  <span class="box"></span>
+  <span class="body"><strong>Phase 19:</strong> Printable Action Register view for boss. Saved layout he can resize.<span class="meta">Phase 19</span></span>
+</div>
+<div class="task">
+  <span class="box"></span>
+  <span class="body"><strong>Phase 20:</strong> Team rollout.<span class="meta">Phase 20</span></span>
+</div>
+
+<h3>Recently completed</h3>
+<div class="task done"><span class="box"></span><span class="body">Phase 17 — Risk Register macro rewritten for new col layout, tested.<span class="meta">Done</span></span></div>
+<div class="task done"><span class="box"></span><span class="body">Phase 16 — Summary tab rebuilt. Overdue formula uses subtraction approach (counts blank Status as overdue, excludes Done/On Hold/Waiting).<span class="meta">Done</span></span></div>
+<div class="task done"><span class="box"></span><span class="body">Phase 15 — OD Days formula in MM col G.<span class="meta">Done</span></span></div>
+<div class="task done"><span class="box"></span><span class="body">Phase 14 — Project Register tab deleted.<span class="meta">Done</span></span></div>
+<div class="task done"><span class="box"></span><span class="body">Phase 13 — Changelog rebuilt AS-style amendment record. Locked password 1502.<span class="meta">Done</span></span></div>
+<div class="task done"><span class="box"></span><span class="body">Phase 12 — How To Use sheet rebuilt with workflow + how-to-fill-in + troubleshooting.<span class="meta">Done</span></span></div>
+<div class="task done"><span class="box"></span><span class="body">Phase 11.5 — ShowActionRegisterView and RestoreFullView updated (auto-AutoFilter, col I unhide/hide).<span class="meta">Done</span></span></div>
+
+</section>
+
+<section id="decisions">
+<h2>2. Locked-in decisions</h2>
+
+<h3>Architecture (Option 3 — simplified)</h3>
+<ul>
+  <li><strong>Project Register: DELETED.</strong> Lifecycle determined by row position in MM. Manual cut/paste between sections.</li>
+  <li><strong>Lifecycle values (7):</strong> Active, DLP, Future, Closed, Team, Strategic, General.</li>
+  <li><strong>Action Register: NO separate sheet.</strong> AR view = ShowActionRegisterView macro filtering MM rows where Type=Action.</li>
+  <li><strong>Banners: manually managed.</strong> NO auto-rebuild macro — RebuildBanners deleted as too destructive.</li>
+  <li><strong>Single master file</strong> — no weekly file rotation. New minutes added on top.</li>
+  <li><strong>Tab name:</strong> "Meeting Minutes" (not "Minutes & Actions").</li>
+</ul>
+
+<h3>MM column structure (FINAL)</h3>
+<ul>
+  <li>A = Type (dropdown: Action, Risk, blank)</li>
+  <li>B = Description</li>
+  <li>C = Owner (dropdown: TM1, TM2, TM3, TM4, TM5, TM6, ALL — <strong>no AL</strong>)</li>
+  <li>D = Due (DD/MM/YYYY)</li>
+  <li>E = Status (dropdown: Open, In Progress, Done, On Hold, Waiting)</li>
+  <li>F = Priority (dropdown: Critical, High, Medium, Low)</li>
+  <li>G = Days OD (formula)</li>
+  <li>H = Notes / Update</li>
+  <li>I = Project (hidden, used for AR filter)</li>
+  <li>J = Date Added (hidden, auto-stamped on row creation) — <em>being added now</em></li>
+</ul>
+
+<h3>Priority palette (LOCKED IN — use everywhere)</h3>
+<table style="border-collapse:collapse;font-size:13px;margin:6px 0 14px">
+  <tr style="background:#1F3864;color:white"><th style="padding:6px 10px;text-align:left">Value</th><th style="padding:6px 10px;text-align:left">Background</th><th style="padding:6px 10px;text-align:left">Hex</th><th style="padding:6px 10px;text-align:left">Font</th><th style="padding:6px 10px;text-align:left">Font hex</th><th style="padding:6px 10px;text-align:left">Preview</th></tr>
+  <tr><td style="padding:5px 10px">Critical</td><td style="padding:5px 10px">Red</td><td style="padding:5px 10px"><code>#C00000</code></td><td style="padding:5px 10px">White</td><td style="padding:5px 10px"><code>#FFFFFF</code></td><td style="padding:5px 10px"><span style="background:#C00000;color:#FFFFFF;padding:3px 12px;font-weight:600">Critical</span></td></tr>
+  <tr><td style="padding:5px 10px">High</td><td style="padding:5px 10px">Orange</td><td style="padding:5px 10px"><code>#ED7D31</code></td><td style="padding:5px 10px">White</td><td style="padding:5px 10px"><code>#FFFFFF</code></td><td style="padding:5px 10px"><span style="background:#ED7D31;color:#FFFFFF;padding:3px 12px;font-weight:600">High</span></td></tr>
+  <tr><td style="padding:5px 10px">Medium</td><td style="padding:5px 10px">Yellow</td><td style="padding:5px 10px"><code>#FFC000</code></td><td style="padding:5px 10px">Amber dark</td><td style="padding:5px 10px"><code>#7D5200</code></td><td style="padding:5px 10px"><span style="background:#FFC000;color:#7D5200;padding:3px 12px;font-weight:600">Medium</span></td></tr>
+  <tr><td style="padding:5px 10px">Low</td><td style="padding:5px 10px">Sage green</td><td style="padding:5px 10px"><code>#A9D18E</code></td><td style="padding:5px 10px">Forest green</td><td style="padding:5px 10px"><code>#375623</code></td><td style="padding:5px 10px"><span style="background:#A9D18E;color:#375623;padding:3px 12px;font-weight:600">Low</span></td></tr>
+</table>
+<div class="warn"><strong>Always use these exact values for Priority.</strong> Do not substitute, do not approximate. Locked 7 May 2026.</div>
+
+<h3>Status palette (LOCKED IN — use everywhere)</h3>
+<table style="border-collapse:collapse;font-size:13px;margin:6px 0 14px">
+  <tr style="background:#1F3864;color:white"><th style="padding:6px 10px;text-align:left">Value</th><th style="padding:6px 10px;text-align:left">Background</th><th style="padding:6px 10px;text-align:left">Hex</th><th style="padding:6px 10px;text-align:left">Font</th><th style="padding:6px 10px;text-align:left">Font hex</th><th style="padding:6px 10px;text-align:left">Preview</th></tr>
+  <tr><td style="padding:5px 10px">Open</td><td style="padding:5px 10px">Pale blue</td><td style="padding:5px 10px"><code>#EEF4FA</code></td><td style="padding:5px 10px">Medium blue</td><td style="padding:5px 10px"><code>#5C7FA1</code></td><td style="padding:5px 10px"><span style="background:#EEF4FA;color:#5C7FA1;padding:3px 12px;font-weight:600">Open</span></td></tr>
+  <tr><td style="padding:5px 10px">In Progress</td><td style="padding:5px 10px">Pale yellow</td><td style="padding:5px 10px"><code>#FFF2CC</code></td><td style="padding:5px 10px">Medium amber</td><td style="padding:5px 10px"><code>#9C7700</code></td><td style="padding:5px 10px"><span style="background:#FFF2CC;color:#9C7700;padding:3px 12px;font-weight:600">In Progress</span></td></tr>
+  <tr><td style="padding:5px 10px">Done</td><td style="padding:5px 10px">Pale green</td><td style="padding:5px 10px"><code>#E5F1D9</code></td><td style="padding:5px 10px">Medium green</td><td style="padding:5px 10px"><code>#5F8F37</code></td><td style="padding:5px 10px"><span style="background:#E5F1D9;color:#5F8F37;padding:3px 12px;font-weight:600">Done</span></td></tr>
+  <tr><td style="padding:5px 10px">On Hold</td><td style="padding:5px 10px">Pale pink</td><td style="padding:5px 10px"><code>#FCE5EA</code></td><td style="padding:5px 10px">Medium pink</td><td style="padding:5px 10px"><code>#A85871</code></td><td style="padding:5px 10px"><span style="background:#FCE5EA;color:#A85871;padding:3px 12px;font-weight:600">On Hold</span></td></tr>
+  <tr><td style="padding:5px 10px">Waiting</td><td style="padding:5px 10px">Pale lavender</td><td style="padding:5px 10px"><code>#F1E8F7</code></td><td style="padding:5px 10px">Medium purple</td><td style="padding:5px 10px"><code>#7E5BA4</code></td><td style="padding:5px 10px"><span style="background:#F1E8F7;color:#7E5BA4;padding:3px 12px;font-weight:600">Waiting</span></td></tr>
+</table>
+<div class="warn"><strong>Always use these exact values for Status.</strong> Do not substitute, do not approximate. Locked 7 May 2026.</div>
+
+<h3>Row-type palette — N1 LOCKED IN (use everywhere)</h3>
+<table style="border-collapse:collapse;font-size:13px;margin:6px 0 14px">
+  <tr style="background:#1F3864;color:white"><th style="padding:6px 10px;text-align:left">Row type</th><th style="padding:6px 10px;text-align:left">Background</th><th style="padding:6px 10px;text-align:left">Hex</th><th style="padding:6px 10px;text-align:left">Font</th><th style="padding:6px 10px;text-align:left">Font hex</th><th style="padding:6px 10px;text-align:left">Preview</th></tr>
+  <tr><td style="padding:5px 10px">Action</td><td style="padding:5px 10px">Pale navy</td><td style="padding:5px 10px"><code>#E1E9F3</code></td><td style="padding:5px 10px">Dark navy</td><td style="padding:5px 10px"><code>#1F3864</code></td><td style="padding:5px 10px"><span style="background:#E1E9F3;color:#1F3864;padding:3px 12px;font-weight:600">Action</span></td></tr>
+  <tr><td style="padding:5px 10px">Action (overdue)</td><td style="padding:5px 10px">Pale red</td><td style="padding:5px 10px"><code>#FBE0E0</code></td><td style="padding:5px 10px">Dark red</td><td style="padding:5px 10px"><code>#B01212</code></td><td style="padding:5px 10px"><span style="background:#FBE0E0;color:#B01212;padding:3px 12px;font-weight:600">Action (OD)</span></td></tr>
+  <tr><td style="padding:5px 10px">Risk</td><td style="padding:5px 10px">Pale orange</td><td style="padding:5px 10px"><code>#FFF1DD</code></td><td style="padding:5px 10px">Dark orange</td><td style="padding:5px 10px"><code>#B05E12</code></td><td style="padding:5px 10px"><span style="background:#FFF1DD;color:#B05E12;padding:3px 12px;font-weight:600">Risk</span></td></tr>
+</table>
+<div class="warn"><strong>Always use these exact values for row types.</strong> Notes have no fill / black text — they are the default cell appearance. Locked 8 May 2026.</div>
+
+<h3>Module 1 macros (final)</h3>
+<ul>
+  <li>Daily: AddRow (Ctrl+Shift+A), AddProject (Ctrl+Shift+P), ToggleDoneRows, ToggleClosedRisks, ShowActionRegisterView, RestoreFullView, PopulateRiskRegister</li>
+  <li>One-shot kept for re-runs: WriteODDaysFormula, FixSummaryOverdueFormula, BuildSummaryTab, BuildHowToUseTab, BuildChangelogTab + helpers</li>
+</ul>
+<p><strong>Module 2:</strong> deleted. Old build macros archived in <code>Macro-Archive.html</code>.</p>
+
+<h3>Save naming</h3>
+<p>User saves as <code>Migration_v1_P{N}_complete.xlsm</code> at the end of each phase.</p>
+</section>
+
+<section id="failure-modes">
+<h2>3. Claude's failure modes</h2>
+
+<div class="warn"><strong>Read this BEFORE acting on screenshots, file uploads, or "fix this" requests.</strong> These have all happened in this project.</div>
+
+<h3>Misreading screenshots</h3>
+<ul>
+  <li>Confused adjacent pink/amber colours — call out the actual hex, don't rely on quick glance.</li>
+  <li>Missed banner positions — verify with openpyxl read, not just image.</li>
+</ul>
+
+<h3>Forgetting MM header block</h3>
+<ul>
+  <li>Header block is rows 1–14, cols A–J. Includes title/date/attendees/shortcuts panel.</li>
+  <li>NEVER suggest column-delete operations — would destroy header.</li>
+  <li>All data macros start at row 16 minimum (row 15 = column headers).</li>
+</ul>
+
+<h3>Generating overlong responses</h3>
+<ul>
+  <li>User has ADHD. Short, granular, sequential steps only. No multi-bucket plans before checking actual file state.</li>
+  <li>If a response feels long, split across multiple turns.</li>
+</ul>
+
+<h3>Generating plans before reading actual file state</h3>
+<ul>
+  <li>Always read the uploaded file with openpyxl FIRST when diagnosing.</li>
+  <li>"It should work" answers without inspection have been wrong multiple times.</li>
+</ul>
+
+<h3>Contradicting established project decisions</h3>
+<ul>
+  <li>Read this doc before suggesting architectural changes.</li>
+  <li>Project Register deleted, AR is filter view not sheet, no auto-banner rebuild — these are LOCKED.</li>
+</ul>
+
+<h3>Forgetting bookmarked items</h3>
+<ul>
+  <li>"Bookmarked" alone = item gets dropped within 5–10 turns.</li>
+  <li>Real fix: write into the Pending Tasks section above immediately, then re-export this file.</li>
+  <li>Date Added kept getting dropped through phase reorders before being fixed.</li>
+</ul>
+
+<h3>Not picking the user's stated best option</h3>
+<ul>
+  <li>If user says "go with the best", do that. Don't fall back to second-best because it seems easier.</li>
+  <li>Specifically: when user said "make it into a html or something I can save to project" — that means create the HTML and present it, not "second best, add to existing doc."</li>
+</ul>
+
+<h3>VBA gotchas</h3>
+<ul>
+  <li>Reserved word <code>any</code> cannot be used as a variable name.</li>
+  <li>VBA line continuation limit — flatten nested arrays via helper subs.</li>
+  <li>Dropdown syntax: <code>Formula1:="Active,DLP,Closed"</code> — no triple quotes (Error 023).</li>
+  <li>Shape <code>.TextFrame.Characters.Text</code> can throw on shapes without text frames — guard with <code>If shp.HasTextFrame Then</code>.</li>
+</ul>
+</section>
+
+<section id="how-to-use">
+<h2>4. How to use this file</h2>
+<ol>
+  <li>Save this file in the Claude project. Replace older version if present.</li>
+  <li>At start of each session, upload this file. Tell Claude: <em>"Read the living state file before responding."</em></li>
+  <li>When something gets bookmarked, ask Claude to update Pending Tasks and re-export.</li>
+  <li>When a phase completes, ask Claude to tick the box and re-export.</li>
+</ol>
+
+<div class="note"><strong>Why this matters:</strong> Claude doesn't have memory between messages. As conversations grow, earlier context becomes harder to recall accurately. This file is the single source of truth across sessions.</div>
+</section>
+
+</div>
+</body>
+</html>
