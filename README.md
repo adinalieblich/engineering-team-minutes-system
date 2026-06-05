@@ -1,8 +1,20 @@
 # Engineering Team Meeting Minutes System
 
-A meeting minutes and action/risk tracking system built in Excel + VBA for a local government engineering team. Solo build, AI-assisted (Claude/Anthropic), deployed in a locked-down corporate environment with SharePoint only — no plugins, no admin rights, no external tools.
+[![Download v1.0 kit](https://img.shields.io/badge/download-v1.0_kit-A752AA?style=for-the-badge)](https://github.com/adinalieblich/engineering-team-minutes-system/releases)
+[![Field guide PDF](https://img.shields.io/badge/field_guide-PDF_40pp-FF692A?style=for-the-badge)](https://github.com/adinalieblich/engineering-team-minutes-system/raw/main/docs/What-AI-Wont-Tell-You.pdf)
+[![Docs site](https://img.shields.io/badge/docs-adinalieblich.github.io-2E1840?style=for-the-badge)](https://adinalieblich.github.io/engineering-team-minutes-system/)
 
-Currently mid-migration to Notion. This repo documents the Excel build and the AI-assisted development methodology that came out of it.
+> I'm a civil engineer working in AI enablement for AEC. This is a
+> meeting-minutes and action/risk tracking system I built solo in
+> Excel + VBA for a local government engineering team — deployed in
+> a locked-down SharePoint-only environment with no plugins, no admin
+> rights, no external tools. It runs the weekly meeting. The repo
+> ships the build, a sanitised example, and a field guide of 23
+> confirmed errors and 10 proven strategies from driving AI to produce
+> corporate-grade VBA. If you work in AEC and want to run this at
+> your team, the v1.0 kit is one download above.
+
+By [Adina Lieblich](https://adinalieblich.com) · Perth, Australia · MIT licensed
 
 ---
 
@@ -10,20 +22,31 @@ Currently mid-migration to Notion. This repo documents the Excel build and the A
 
 | Folder | Contents |
 |---|---|
-| `docs/` | Project documentation — Living State file, How To Use guide, error catalogue, style guide |
-| `src/vba/` | All VBA modules — macros, builders, helpers |
-| `src/python/` | Python verification scripts (openpyxl) for comparing files against source of truth |
+| `docs/` | Documentation, **field guide PDF**, How To Use guide, architecture decisions, style guide, living state |
+| `src/vba/` | All VBA modules — macros, builders, helpers (the actual build) |
+| `src/python/` | Python verification scripts (openpyxl) — analysis only, never ship |
+| `examples/` | Sanitised example workbook scaffolding |
 | `assets/` | Screenshots, palette references |
-| `examples/` | Sanitised example workbook |
-| `CLAUDE.md` | Instructions for Claude Code (or any AI assistant) picking up this project |
+| `CLAUDE.md` | Project instructions for AI assistants picking this up |
+
+## Downloads
+
+| Asset | Format | Size |
+|---|---|---|
+| [Field guide — What AI Won't Tell You](https://github.com/adinalieblich/engineering-team-minutes-system/raw/main/docs/What-AI-Wont-Tell-You.pdf) | PDF · 40pp | 1.4 MB |
+| [How To Use the workbook](https://github.com/adinalieblich/engineering-team-minutes-system/raw/main/docs/How-To-Use.pdf) | PDF | 330 KB |
+| [Macro Archive](https://github.com/adinalieblich/engineering-team-minutes-system/raw/main/docs/Macro-Archive.pdf) | PDF | 360 KB |
+| [v1.0 kit (zip)](https://github.com/adinalieblich/engineering-team-minutes-system/releases/latest) | zip | ~3 MB |
+
+The kit zip contains everything you need to run this at your own team: VBA modules, How To Use, Style Guide, field guide PDF, MIT license.
 
 ---
 
 ## The most interesting file
 
-**[`docs/What-AI-Wont-Tell-You.html`](docs/What-AI-Wont-Tell-You.html)** — a practical field guide to AI-assisted Excel/VBA development. 23 confirmed errors with root causes and working fixes, plus 10 proven strategies. Written to brief the next AI session so the same mistakes don't repeat.
+**[`docs/What-AI-Wont-Tell-You.html`](docs/What-AI-Wont-Tell-You.html)** ([PDF](docs/What-AI-Wont-Tell-You.pdf)) — a practical field guide to AI-assisted Excel/VBA development.
 
-This is the meta-deliverable. The system is the artifact; the field guide is the methodology.
+23 confirmed errors with root causes and working fixes. 10 strategies that worked. 9 VBA patterns. 8 AI failure modes. 7 design decisions. Written to brief the next AI session so the same mistakes don't repeat.
 
 ---
 
@@ -40,9 +63,9 @@ Single master `.xlsm` workbook, SharePoint-synced. Five sheets:
 ### Key architectural decisions
 
 - **Action Register is a filter view, not a separate sheet.** A macro filters Meeting Minutes where Type=Action. This killed an unreliable two-way sync that was breaking weekly.
-- **Type is a dropdown, not checkboxes.** Form-control checkboxes drift, don't anchor properly, and accumulate as ghost shapes. Replaced 257 of them with a single dropdown column.
+- **Type is a dropdown, not checkboxes.** Form-control checkboxes drift, don't anchor, and accumulate as ghost shapes. Replaced 257 of them with a single dropdown column.
 - **Project lifecycle = row position.** No Project Register sheet. Banner rows define structure. Manual cut/paste between lifecycle sections.
-- **Conditional formatting uses `xlExpression` + `$Col` absolute references on contiguous sqrefs.** Fragmented sqrefs silently break new-row coverage — discovered the hard way (see Error 018).
+- **Conditional formatting uses `xlExpression` + `$Col` absolute references on contiguous sqrefs.** Fragmented sqrefs silently break new-row coverage — discovered the hard way (Error 018).
 - **Banners manually managed.** Auto-rebuild was too destructive. Removed.
 
 ### Column structure (Meeting Minutes)
@@ -64,25 +87,25 @@ Single master `.xlsm` workbook, SharePoint-synced. Five sheets:
 
 ## How it was built — methodology
 
-This is the part that matters more than the artifact.
+This matters more than the artifact.
 
 ### Mockup-first development
-Every major design decision (colour theme, priority palette, AR formatting, Risk Register structure) was rendered as an interactive HTML mockup BEFORE any code was written. Stakeholder sign-off on the mockup. Build once. Documented in [`docs/What-AI-Wont-Tell-You.html`](docs/What-AI-Wont-Tell-You.html) — Strategy 4.
+Every major design decision (colour theme, priority palette, AR formatting, Risk Register structure) rendered as an interactive HTML mockup BEFORE any code was written. Stakeholder sign-off on the mockup. Build once. Field guide — Strategy 4.
 
 ### File-upload-first diagnosis
-AI's default pattern is to bucket issues into a plausible plan based on project docs. Roughly half the time that plan is wrong because the actual file state has drifted. Rule developed: never accept a plan that wasn't built from inspection of the current file. See Problem 7.
+AI's default pattern is to bucket issues into a plausible plan based on project docs. Roughly half the time that plan is wrong because the actual file state has drifted. Rule: never accept a plan that wasn't built from inspection of the current file. See Problem 7.
 
 ### Root-cause demand
-When something failed twice, refused another patch attempt. This is how `bgColor` vs `fgColor` (the cardinal openpyxl CF bug), triple-quote escaping in CF formulas, and CF sqref fragmentation were all found. See Strategy 6.
+When something failed twice, refused another patch attempt. This is how `bgColor` vs `fgColor` (the cardinal openpyxl CF bug), triple-quote escaping in CF formulas, and CF sqref fragmentation were all found. Strategy 6.
 
 ### Living State file
 Every session ends with a state archive. Every session starts by re-uploading it. The conversation IS the project memory. See [`docs/Living-State.html`](docs/Living-State.html).
 
 ### Pre-flight checks
-Before running any macro: Sub/End Sub balance, With/End With balance, Dim placement, `xlSolid` before `.Interior.Color` on FormatConditions, `.HasTextFrame` guards. See Strategy 2.
+Before running any macro: Sub/End Sub balance, With/End With balance, Dim placement, `xlSolid` before `.Interior.Color` on FormatConditions, `.HasTextFrame` guards. Strategy 2.
 
 ### Never ship AI-built `.xlsx` files
-openpyxl writes CF fills as `bgColor` which Excel renders invisible. Rule: AI writes VBA macros, the user runs them inside Excel. Files Excel touches stay valid; files Python touches break in invisible ways. See Error 001.
+openpyxl writes CF fills as `bgColor` which Excel renders invisible. Rule: AI writes VBA macros, the user runs them inside Excel. Files Excel touches stay valid; files Python touches break in invisible ways. Error 001.
 
 ---
 
@@ -98,9 +121,17 @@ openpyxl writes CF fills as `bgColor` which Excel renders invisible. Rule: AI wr
 
 ## Project status
 
-Excel build: ~95% complete. In Phase 18 (data migration from old template) at time of last commit. Phases 19–21 pending (printable AR view, team rollout, cosmetic polish).
+Excel build: ~95% complete. Phase 18 (data migration from old template) in progress. Phases 19–21 pending (printable AR view, team rollout, cosmetic polish).
 
-Currently in parallel migration to Notion — see `docs/Notion-Migration-Notes.md`.
+Parallel migration to Notion underway — see [`docs/Notion-Migration-Notes.md`](docs/Notion-Migration-Notes.md).
+
+---
+
+## A note on AI-assisted development
+
+Built with AI assistance from start to finish. The skill being demonstrated is not "I used AI." It's the discipline of driving AI to produce working corporate-grade output: when to push back, when to demand diagnosis instead of patching, when to mockup before building, when to refuse confident-sounding plans that weren't grounded in the actual file state.
+
+The errors documented here are not hypothetical. Every one cost real time in a live environment.
 
 ---
 
@@ -108,10 +139,9 @@ Currently in parallel migration to Notion — see `docs/Notion-Migration-Notes.m
 
 MIT — see [`LICENSE`](LICENSE).
 
----
+## Author
 
-## A note on AI-assisted development
-
-This project was built with AI assistance from start to finish, but the skill being demonstrated is not "I used AI." It's the discipline of driving AI to produce working corporate-grade output: when to push back, when to demand diagnosis instead of patching, when to mockup before building, and when to refuse confident-sounding plans that weren't grounded in the actual file state.
-
-The errors documented here are not hypothetical. Every one cost real time in a live environment.
+Adina Lieblich · Civil engineer · AI enablement in AEC · Perth, Australia
+[adinalieblich.com](https://adinalieblich.com) ·
+[LinkedIn](https://www.linkedin.com/in/adinalieblich) ·
+[other repos](https://github.com/adinalieblich)

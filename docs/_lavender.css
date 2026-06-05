@@ -1,0 +1,546 @@
+/* ====================================================================
+ * _lavender.css — shared brand for the docs/ pages
+ *
+ * Single source of truth for the Lavender look across:
+ *   docs/index.html · How-To-Use.html · Living-State.html · Macro-Archive.html
+ *
+ * What AI Won't Tell You has its own embedded copy (forked design, more
+ * editorial). Keep this in lock-step with that file's :root block.
+ * ==================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  --ink:     #2E1840;
+  --ink-2:   #1a0d24;
+  --paper:   #F3ECFA;
+  --cream:   #FFF8F0;
+  --bone:    #F2E9D8;
+  --purple:  #A752AA;
+  --purple-d:#7d3c80;
+  --orange:  #FF692A;
+  --orange-d:#d44f0f;
+  --lilac:   #EAB7FE;
+  --lilac-d: #c98bef;
+  --blush:   #F8D4EB;
+  --blush-d: #e89bc2;
+  --periw:   #B8C5FF;
+  --periw-d: #8a9aff;
+  --teal:    #5E7E80;
+  --teal-d:  #3d5859;
+  --red:     #B01212;
+  --green:   #5F8F37;
+  --line:    rgba(46, 24, 64, 0.10);
+  --line-2:  rgba(46, 24, 64, 0.05);
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body:    'Inter Tight', system-ui, sans-serif;
+  --font-mono:    'IBM Plex Mono', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.6;
+  font-size: 15px;
+  padding: 32px 20px 60px;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--ink); color: var(--paper); }
+a { color: var(--purple); text-decoration: underline; text-underline-offset: 2px; }
+a:hover { color: var(--orange); }
+img { max-width: 100%; display: block; }
+
+/* ====================================================================
+ * PAGE CONTAINER
+ * ==================================================================== */
+.wrap, .body {
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+/* ====================================================================
+ * HEADER — the dark-bar at the top of each doc
+ * ==================================================================== */
+header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 36px 36px 28px;
+  border-radius: 12px;
+  margin-bottom: 28px;
+  border-top: 4px solid var(--orange);
+  position: relative;
+  overflow: hidden;
+}
+header::after {
+  /* faint blush wash bottom-right for warmth */
+  content: '';
+  position: absolute;
+  right: -80px;
+  bottom: -80px;
+  width: 240px; height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(248, 212, 235, 0.18), transparent 70%);
+  pointer-events: none;
+}
+header h1 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+}
+header h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--lilac);
+}
+header .sub {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  opacity: 0.85;
+  margin: 0 0 14px;
+  line-height: 1.5;
+}
+header .meta, header .timestamp {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+/* ====================================================================
+ * INTRO — the first content block under header
+ * ==================================================================== */
+.intro {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+}
+.intro p { margin: 0 0 12px; }
+.intro p:last-child { margin: 0; }
+.intro a { color: var(--purple); font-weight: 600; }
+
+/* ====================================================================
+ * SECTION TITLE — the "Start here" / "Architecture" labels
+ * ==================================================================== */
+.section-title, h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 36px 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.section-title em, h2 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--purple);
+}
+
+/* The original `.section-title` is uppercase mono — preserve that intent
+ * but in Lavender flavour: small caps mono in --teal for the labels in
+ * index.html ("Start here", "Architecture & state", "Reference"). */
+.section-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-d);
+  border-bottom: 1px solid var(--line-2);
+  margin: 32px 0 12px;
+}
+
+h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  margin: 24px 0 10px;
+  color: var(--ink);
+}
+h4 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  margin: 16px 0 8px;
+  color: var(--purple-d);
+  letter-spacing: 0.01em;
+}
+
+p, ul, ol { margin: 0 0 14px; }
+ul, ol { padding-left: 24px; }
+li { margin-bottom: 4px; }
+
+strong, b { font-weight: 700; color: var(--ink); }
+em, i { font-style: italic; }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 28px 0;
+}
+
+/* ====================================================================
+ * CARDS — index.html doc grid
+ * ==================================================================== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 22px;
+  text-decoration: none;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+.card:hover {
+  border-color: var(--purple);
+  box-shadow: 0 4px 16px rgba(167, 82, 170, 0.12);
+  transform: translateY(-1px);
+}
+.card.featured {
+  border: 2px solid var(--purple);
+  background: linear-gradient(135deg, white 0%, var(--paper) 100%);
+}
+.card h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+}
+.card p {
+  font-size: 13.5px;
+  color: var(--ink);
+  opacity: 0.75;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ====================================================================
+ * TAG — small inline label (used for card category + macro states)
+ * ==================================================================== */
+.tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--purple-d);
+  background: var(--lilac);
+  padding: 3px 9px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+  align-self: flex-start;
+}
+.card.featured .tag {
+  background: var(--purple);
+  color: white;
+}
+.tag.action { background: var(--periw); color: var(--ink); }
+.tag.risk   { background: var(--blush); color: var(--ink); }
+.tag.done   { background: var(--green); color: white; }
+.tag.warn   { background: var(--orange); color: white; }
+
+/* ====================================================================
+ * TOC — table of contents at top of long docs
+ * ==================================================================== */
+.toc {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 10px;
+  padding: 18px 24px;
+  margin: 20px 0 28px;
+  font-size: 14px;
+}
+.toc h2, .toc h3, .toc strong {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-d);
+  margin: 0 0 10px;
+  padding: 0;
+  border: 0;
+  display: block;
+}
+.toc ul, .toc ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.toc li {
+  margin: 6px 0;
+  padding-left: 14px;
+  position: relative;
+}
+.toc li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--purple);
+  font-weight: 600;
+}
+.toc a {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 500;
+}
+.toc a:hover {
+  color: var(--purple);
+  text-decoration: underline;
+}
+
+/* ====================================================================
+ * CALLOUTS — .note, .warn, .box
+ * ==================================================================== */
+.note {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--purple);
+  border-radius: 8px;
+  padding: 16px 22px;
+  margin: 18px 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.warn {
+  background: rgba(255, 105, 42, 0.06);
+  border: 1px solid rgba(255, 105, 42, 0.25);
+  border-left: 4px solid var(--orange);
+  border-radius: 8px;
+  padding: 16px 22px;
+  margin: 18px 0;
+  font-size: 14px;
+}
+.box {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 18px 0;
+}
+
+/* ====================================================================
+ * CODE + KBD
+ * ==================================================================== */
+code, .kbd {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+:not(pre) > code {
+  background: rgba(167, 82, 170, 0.08);
+  color: var(--purple-d);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+.kbd {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  box-shadow: 0 1px 0 var(--ink-2);
+}
+pre {
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 10px;
+  padding: 18px 22px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.5;
+  margin: 16px 0;
+}
+pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* ====================================================================
+ * COLORBOX — palette swatches in How-To-Use
+ * ==================================================================== */
+.colorbox {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  vertical-align: -2px;
+  margin-right: 6px;
+  border: 1px solid var(--line);
+}
+
+/* ====================================================================
+ * TASK ROWS — Living-State pending/done list
+ * ==================================================================== */
+.task {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 8px 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+}
+.task::before {
+  content: '○';
+  color: var(--purple);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.task.done {
+  background: var(--cream);
+  opacity: 0.75;
+}
+.task.done::before {
+  content: '✓';
+  color: var(--green);
+}
+
+/* ====================================================================
+ * MACRO ARCHIVE — individual macro entries
+ * ==================================================================== */
+.macro {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin: 18px 0;
+}
+.macro h3 {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--purple-d);
+  margin: 0 0 8px;
+}
+.macro .desc {
+  font-size: 14px;
+  color: var(--ink);
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+.section {
+  margin: 32px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--line);
+}
+.section h2 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* ====================================================================
+ * FOOTER + DOWNLOAD BAR
+ * ==================================================================== */
+.footer {
+  margin-top: 36px;
+  padding: 18px 22px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal-d);
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.footer a {
+  color: var(--purple);
+  text-decoration: none;
+  font-weight: 600;
+  margin: 0 6px;
+}
+.footer a:hover { text-decoration: underline; }
+
+.download-bar {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 20px;
+  margin: 0 0 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.download-bar strong {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--ink);
+  margin-right: 4px;
+}
+.download-bar a {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+.download-bar a:hover {
+  background: var(--purple);
+}
+.download-bar a.print {
+  background: white;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+}
+.download-bar a.print:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* ====================================================================
+ * PRINT — save-as-PDF friendly. Hide chrome, expand content.
+ * ==================================================================== */
+@media print {
+  body { background: white; padding: 0; }
+  header { background: white; color: var(--ink); border-radius: 0; border: 0; border-top: 4px solid var(--orange); padding: 24px 0; }
+  header h1 em, header .sub, header .meta, header .timestamp { color: var(--ink); opacity: 0.8; }
+  .toc, .download-bar { background: white; }
+  .card, .macro, .task, .note, .warn, .box, .intro { break-inside: avoid; }
+  a { color: var(--ink); }
+  pre { background: #f5f5f5; color: var(--ink); border: 1px solid var(--line); }
+  .download-bar, .footer .no-print { display: none; }
+}

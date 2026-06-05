@@ -3,157 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Engineering Team Meeting Minutes — How To Use</title>
-<style>
-:root {
-  --bg: #FAFAF7;
-  --panel: #FFFFFF;
-  --ink: #1A1A2E;
-  --muted: #5F5E5A;
-  --border: #E5E5E0;
-  --accent: #1F3864;
-  --accent-soft: #DDEBF7;
-  --code-bg: #F4F4F0;
-  --warn: #C00000;
-}
-* { box-sizing: border-box; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  background: var(--bg);
-  color: var(--ink);
-  margin: 0;
-  padding: 24px;
-  line-height: 1.6;
-  font-size: 14px;
-}
-.wrap { max-width: 920px; margin: 0 auto; }
-header {
-  background: var(--accent);
-  color: white;
-  padding: 22px 28px;
-  border-radius: 8px;
-  margin-bottom: 24px;
-}
-header h1 { margin: 0 0 4px; font-size: 22px; font-weight: 500; letter-spacing: 0.2px; }
-header p { margin: 0; opacity: 0.85; font-size: 13.5px; }
-.toc {
-  background: var(--panel);
-  border: 0.5px solid var(--border);
-  border-radius: 8px;
-  padding: 18px 24px;
-  margin-bottom: 28px;
-}
-.toc h2 { margin: 0 0 10px; font-size: 13px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; }
-.toc ol { margin: 0; padding-left: 20px; }
-.toc li { margin: 4px 0; font-size: 13.5px; }
-.toc a { color: var(--accent); text-decoration: none; }
-.toc a:hover { text-decoration: underline; }
-section {
-  background: var(--panel);
-  border: 0.5px solid var(--border);
-  border-radius: 8px;
-  padding: 22px 28px;
-  margin-bottom: 18px;
-}
-section h2 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--accent);
-  margin: 0 0 14px;
-  padding-bottom: 8px;
-  border-bottom: 0.5px solid var(--border);
-}
-section h3 {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--ink);
-  margin: 18px 0 8px;
-}
-section p { margin: 0 0 10px; }
-section ul, section ol { margin: 0 0 12px; padding-left: 20px; }
-section li { margin: 4px 0; }
-.kbd {
-  display: inline-block;
-  background: #1F3864;
-  color: white;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
-  font-size: 11.5px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-}
-.tag {
-  display: inline-block;
-  font-size: 10.5px;
-  padding: 2px 8px;
-  border-radius: 8px;
-  margin-right: 4px;
-  font-weight: 500;
-}
-.tag.team { background: #444441; color: white; }
-.tag.active { background: #1F3864; color: white; }
-.tag.dlp { background: #0F6E56; color: white; }
-.tag.future { background: #185FA5; color: white; }
-.tag.strategic { background: #534AB7; color: white; }
-.tag.general { background: #5F5E5A; color: white; }
-.tag.closed { background: #5F5E5A; color: white; }
-.tag.action { background: #FFF3CD; color: #806000; font-weight: 600; }
-.tag.risk { background: #FFE4D5; color: #843C0C; font-weight: 600; }
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 8px 0 14px;
-  font-size: 13px;
-}
-table th {
-  background: var(--accent-soft);
-  color: var(--accent);
-  text-align: left;
-  font-weight: 500;
-  padding: 8px 10px;
-  border-bottom: 0.5px solid var(--border);
-}
-table td {
-  padding: 8px 10px;
-  border-bottom: 0.5px solid var(--border);
-  vertical-align: top;
-}
-table td:first-child { font-weight: 500; color: var(--accent); white-space: nowrap; }
-.note {
-  background: #FFF8DC;
-  border-left: 3px solid #806000;
-  padding: 10px 14px;
-  font-size: 13px;
-  color: #5F4500;
-  margin: 12px 0;
-  border-radius: 4px;
-}
-.warn {
-  background: #FCE4E4;
-  border-left: 3px solid #C00000;
-  padding: 10px 14px;
-  font-size: 13px;
-  color: #8B2E2E;
-  margin: 12px 0;
-  border-radius: 4px;
-}
-code {
-  background: var(--code-bg);
-  padding: 1px 6px;
-  border-radius: 3px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
-  font-size: 12.5px;
-}
-.colorbox {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border-radius: 3px;
-  vertical-align: middle;
-  margin-right: 6px;
-  border: 0.5px solid rgba(0,0,0,0.15);
-}
-</style>
+<link rel="stylesheet" href="_lavender.css">
 </head>
 <body>
 <div class="wrap">
@@ -162,6 +12,14 @@ code {
   <h1>Engineering Team Meeting Minutes — How To Use</h1>
   <p>Engineering Team · v1.0 · May 2026</p>
 </header>
+
+<div class="download-bar">
+  <strong>Engineering Team Minutes System →</strong>
+  <a href="index.html">Index</a>
+  <a href="What-AI-Wont-Tell-You.html" class="print">Field guide</a>
+  <a href="https://github.com/adinalieblich/engineering-team-minutes-system" class="print">Repo</a>
+</div>
+
 
 <div class="toc">
   <h2>Contents</h2>

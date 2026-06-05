@@ -3,96 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>EngTeam Migration — Living State File</title>
-<style>
-:root {
-  --bg: #FAFAF7;
-  --panel: #FFFFFF;
-  --ink: #1A1A2E;
-  --muted: #5F5E5A;
-  --border: #E5E5E0;
-  --accent: #1F3864;
-  --warn: #C00000;
-  --done: #1B5E20;
-}
-* { box-sizing: border-box; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  background: var(--bg);
-  color: var(--ink);
-  margin: 0;
-  padding: 24px;
-  line-height: 1.55;
-  font-size: 14px;
-}
-.wrap { max-width: 920px; margin: 0 auto; }
-header {
-  background: var(--accent);
-  color: white;
-  padding: 22px 28px;
-  border-radius: 8px;
-  margin-bottom: 24px;
-}
-header h1 { margin: 0 0 4px; font-size: 22px; font-weight: 500; }
-header p { margin: 0; opacity: 0.85; font-size: 13px; }
-section {
-  background: var(--panel);
-  border: 0.5px solid var(--border);
-  border-radius: 8px;
-  padding: 22px 28px;
-  margin-bottom: 18px;
-}
-section h2 {
-  font-size: 16px; font-weight: 500; color: var(--accent);
-  margin: 0 0 14px; padding-bottom: 8px; border-bottom: 0.5px solid var(--border);
-}
-section h3 { font-size: 13.5px; font-weight: 600; margin: 16px 0 8px; color: var(--ink); text-transform: uppercase; letter-spacing: 0.4px; }
-section ul { margin: 0 0 12px; padding-left: 20px; }
-section li { margin: 5px 0; }
-.task {
-  display: flex; gap: 10px; align-items: flex-start;
-  padding: 8px 10px;
-  border-bottom: 0.5px dashed var(--border);
-}
-.task:last-child { border-bottom: none; }
-.task .box {
-  display: inline-block; width: 14px; height: 14px;
-  border: 1px solid var(--accent); border-radius: 3px;
-  margin-top: 3px; flex-shrink: 0;
-  background: white;
-}
-.task.done .box { background: var(--done); border-color: var(--done); }
-.task.done .box::after { content: "✓"; color: white; font-size: 11px; line-height: 12px; padding-left: 2px; }
-.task .body { flex: 1; font-size: 13.5px; }
-.task .meta { font-size: 11px; color: var(--muted); display: block; margin-top: 2px; }
-.task.done .body { text-decoration: line-through; color: var(--muted); }
-.warn {
-  background: #FCE4E4; border-left: 3px solid var(--warn);
-  padding: 10px 14px; font-size: 13px; color: #8B2E2E;
-  margin: 12px 0; border-radius: 4px;
-}
-.note {
-  background: #FFF8DC; border-left: 3px solid #806000;
-  padding: 10px 14px; font-size: 13px; color: #5F4500;
-  margin: 12px 0; border-radius: 4px;
-}
-code {
-  background: #F4F4F0; padding: 1px 6px; border-radius: 3px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
-  font-size: 12.5px;
-}
-.toc {
-  background: var(--panel); border: 0.5px solid var(--border);
-  border-radius: 8px; padding: 14px 22px; margin-bottom: 22px;
-}
-.toc h2 { margin: 0 0 6px; font-size: 11.5px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-.toc ol { margin: 0; padding-left: 20px; font-size: 13.5px; }
-.toc a { color: var(--accent); text-decoration: none; }
-.timestamp {
-  display: inline-block; font-size: 11.5px; color: var(--muted);
-  background: #EEEEE8; padding: 2px 8px; border-radius: 8px;
-  margin-left: 8px; font-weight: 400;
-}
-</style>
+<link rel="stylesheet" href="_lavender.css">
 </head>
 <body>
 <div class="wrap">
@@ -101,6 +12,14 @@ code {
   <h1>EngTeam Migration — Living State File <span class="timestamp" style="background:rgba(255,255,255,0.2);color:white;">Last updated: 7 May 2026</span></h1>
   <p>This file lives in the project. Re-upload at the start of each Claude session so context survives across conversations.</p>
 </header>
+
+<div class="download-bar">
+  <strong>Engineering Team Minutes System →</strong>
+  <a href="index.html">Index</a>
+  <a href="What-AI-Wont-Tell-You.html" class="print">Field guide</a>
+  <a href="https://github.com/adinalieblich/engineering-team-minutes-system" class="print">Repo</a>
+</div>
+
 
 <div class="warn"><strong>Claude — read this file FIRST in every session.</strong> Pending tasks are real items that get dropped from memory otherwise. Locked decisions are non-negotiable. Failure modes are recurring mistakes — don't repeat them.</div>
 

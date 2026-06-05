@@ -3,160 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Engineering Team Meeting Minutes System — Documentation</title>
-<style>
-:root {
-  --bg: #FAFAF7;
-  --panel: #FFFFFF;
-  --ink: #1A1A2E;
-  --muted: #5F5E5A;
-  --border: #E5E5E0;
-  --accent: #1F3864;
-  --accent-soft: #DDEBF7;
-  --green: #70AD47;
-}
-* { box-sizing: border-box; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  background: var(--bg);
-  color: var(--ink);
-  margin: 0;
-  padding: 24px;
-  line-height: 1.6;
-  font-size: 14px;
-}
-.wrap { max-width: 920px; margin: 0 auto; }
-header {
-  background: var(--accent);
-  color: white;
-  padding: 28px 32px;
-  border-radius: 8px;
-  margin-bottom: 24px;
-  border-top: 4px solid var(--green);
-}
-header h1 { margin: 0 0 6px; font-size: 24px; font-weight: 500; letter-spacing: 0.2px; }
-header .sub { margin: 0; opacity: 0.85; font-size: 13.5px; }
-header .meta {
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255,255,255,0.15);
-  font-size: 12px;
-  opacity: 0.75;
-}
-.intro {
-  background: var(--panel);
-  border: 0.5px solid var(--border);
-  border-radius: 8px;
-  padding: 20px 28px;
-  margin-bottom: 24px;
-}
-.intro p { margin: 0 0 10px; }
-.intro p:last-child { margin-bottom: 0; }
-.intro a { color: var(--accent); }
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 24px; }
-.card {
-  background: var(--panel);
-  border: 0.5px solid var(--border);
-  border-radius: 8px;
-  padding: 20px 22px;
-  text-decoration: none;
-  color: var(--ink);
-  display: flex;
-  flex-direction: column;
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-.card:hover {
-  border-color: var(--accent);
-  box-shadow: 0 2px 8px rgba(31, 56, 100, 0.08);
-}
-.card .tag {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: var(--accent-soft);
-  padding: 2px 8px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  align-self: flex-start;
-}
-.card.featured { border: 1.5px solid var(--accent); }
-.card.featured .tag { background: var(--accent); color: white; }
-.card h2 { margin: 0 0 6px; font-size: 15px; font-weight: 600; color: var(--accent); }
-.card p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.5; }
-.section-title {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 28px 0 10px;
-  padding-bottom: 4px;
-  border-bottom: 0.5px solid var(--border);
-}
-.footer {
-  margin-top: 28px;
-  padding: 16px 22px;
-  font-size: 12px;
-  color: var(--muted);
-  border-top: 0.5px solid var(--border);
-  text-align: center;
-}
-.footer a { color: var(--accent); text-decoration: none; }
-.footer a:hover { text-decoration: underline; }
-</style>
+<title>Engineering Team Meeting Minutes System · by Adina Lieblich</title>
+<meta name="description" content="A meeting-minutes and action/risk tracking system in Excel + VBA, built solo for a local government engineering team. Field guide + downloads.">
+<link rel="stylesheet" href="_lavender.css">
 </head>
 <body>
 <div class="wrap">
 
 <header>
-  <h1>Engineering Team Meeting Minutes System</h1>
-  <p class="sub">Documentation index — Excel/VBA meeting minutes &amp; action tracking, built with AI-assisted development.</p>
-  <p class="meta">Solo build · AI-assisted (Claude / Anthropic) · Deployed in a locked-down corporate environment (SharePoint only, no plugins, no admin rights)</p>
+  <h1>Engineering Team <em>Minutes</em> System</h1>
+  <p class="sub">
+    A meeting-minutes &amp; action/risk tracking system in Excel + VBA.
+    Built solo for a local government engineering team. Deployed inside
+    a locked-down SharePoint environment — no plugins, no admin rights.
+  </p>
+  <p class="meta">By Adina Lieblich · Civil engineer · Perth, Australia · AI-assisted (Claude)</p>
 </header>
 
+<div class="download-bar">
+  <strong>Get the kit →</strong>
+  <a href="https://github.com/adinalieblich/engineering-team-minutes-system/releases">v1.0 release (.zip)</a>
+  <a href="What-AI-Wont-Tell-You.pdf" class="print">Field guide PDF (40 pp)</a>
+  <a href="https://github.com/adinalieblich/engineering-team-minutes-system" class="print">Repo</a>
+</div>
+
 <div class="intro">
-  <p>This is the documentation site for the system. The repository — including VBA source, Python verification scripts, and architecture notes — lives at <a href="https://github.com/adinalieblich/engineering-team-minutes-system">github.com/adinalieblich/engineering-team-minutes-system</a>.</p>
-  <p>Start with the field guide if you want the meta-deliverable. Start with How To Use if you want to understand the system itself.</p>
+  <p>
+    Two things in this repo. The <strong>system</strong> — VBA modules,
+    Python verification scripts, sanitised example workbook scaffolding,
+    style guide. And the <strong>field guide</strong> — what AI gets wrong
+    when you ask it to write corporate-grade VBA, and what to do about it.
+  </p>
+  <p>
+    Start with <a href="What-AI-Wont-Tell-You.html">What AI Won't Tell You</a> if
+    you want the lessons. Start with <a href="How-To-Use.html">How To Use</a> if
+    you want to understand how the system runs.
+  </p>
 </div>
 
 <div class="section-title">Start here</div>
 <div class="cards">
   <a class="card featured" href="What-AI-Wont-Tell-You.html">
-    <span class="tag">Field guide</span>
-    <h2>What AI Won't Tell You</h2>
-    <p>A practical field guide to AI-assisted Excel/VBA development. Confirmed errors with root causes and working fixes, plus proven strategies. The most valuable file in the repo.</p>
+    <span class="tag">Field guide · 40 pages</span>
+    <h2>What AI <em>Won't</em> Tell You</h2>
+    <p>
+      23 confirmed errors with root causes and fixes. 10 strategies that
+      worked. 9 VBA patterns. 8 AI failure modes. 7 design decisions.
+      The most valuable file in the repo. Also available as
+      <a href="What-AI-Wont-Tell-You.pdf">PDF</a>.
+    </p>
   </a>
   <a class="card" href="How-To-Use.html">
     <span class="tag">User guide</span>
-    <h2>How To Use</h2>
+    <h2>How To <em>Use</em></h2>
     <p>End-user guide to the workbook — sheets, columns, colours, weekly workflow, keyboard shortcuts, troubleshooting.</p>
   </a>
 </div>
 
-<div class="section-title">Architecture &amp; state</div>
+<div class="section-title">Architecture &amp; project state</div>
 <div class="cards">
   <a class="card" href="Architecture-Decisions.md">
     <span class="tag">Decisions</span>
     <h2>Architecture Decisions</h2>
-    <p>The major architectural pivots — Action Register as filter view, dropdowns over checkboxes, project lifecycle by row position, and mockup-first methodology.</p>
+    <p>Action Register as a filter view, dropdowns over checkboxes, project lifecycle by row position, and mockup-first methodology — the major pivots.</p>
   </a>
   <a class="card" href="Living-State.html">
     <span class="tag">Project state</span>
     <h2>Living State</h2>
-    <p>The session-handoff file. Locked decisions, pending tasks, and Claude's failure modes — re-uploaded at the start of each AI session as project memory.</p>
+    <p>Session-handoff file. Locked decisions, pending tasks, and Claude's known failure modes — re-uploaded at the start of each AI session as project memory.</p>
   </a>
   <a class="card" href="Style-Guide.md">
     <span class="tag">Visual system</span>
     <h2>Style Guide</h2>
-    <p>The locked-in palette — priority, status, row-type, banner colours with exact hex values. Typography conventions.</p>
+    <p>The locked palette — priority, status, row-type, banner colours with exact hex values. Typography conventions.</p>
   </a>
   <a class="card" href="Notion-Migration-Notes.md">
     <span class="tag">In flight</span>
     <h2>Notion Migration Notes</h2>
-    <p>Parallel migration of the system to Notion — what's moving, what isn't, and what might get worse.</p>
+    <p>Parallel migration to Notion — what's moving, what isn't, and what might get worse.</p>
   </a>
 </div>
 
@@ -165,12 +89,30 @@ header .meta {
   <a class="card" href="Macro-Archive.html">
     <span class="tag">Archive</span>
     <h2>Macro Archive</h2>
-    <p>One-shot build macros and old-architecture code preserved for reference. None of these run on the current file day-to-day.</p>
+    <p>One-shot build macros and old-architecture code, preserved for reference. None of these run on the current file day-to-day.</p>
   </a>
 </div>
 
+<div class="section-title">If you want to run this at your team</div>
+<div class="intro">
+  <p>
+    Pull down the <a href="https://github.com/adinalieblich/engineering-team-minutes-system/releases">v1.0 kit</a>.
+    Read <em>How To Use</em>. Read the <em>field guide</em> for the
+    AI patterns. The VBA modules in <code>src/vba/</code> are the actual
+    build — feed them into a fresh Excel workbook macro module and run
+    them in order. The system was built for one engineering team but
+    the patterns transfer.
+  </p>
+  <p>
+    Bugs, questions, "this didn't work for me" — open an
+    <a href="https://github.com/adinalieblich/engineering-team-minutes-system/issues">issue</a> on the repo.
+  </p>
+</div>
+
 <div class="footer">
-  <a href="https://github.com/adinalieblich/engineering-team-minutes-system">View source on GitHub</a> · MIT licensed
+  <a href="https://github.com/adinalieblich/engineering-team-minutes-system">View source on GitHub</a> ·
+  MIT licensed ·
+  <a href="https://adinalieblich.com">adinalieblich.com</a>
 </div>
 
 </div>
